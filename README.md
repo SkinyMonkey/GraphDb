@@ -20,15 +20,15 @@ CRUD:
 - [x]  Retrieve a vertex
 - [x]  Retrieve an edg
 
-- [ ]  Update a graph    KO
-- [ ]  Update a vertex   KO
-- [ ]  Update an edge    KO
+- [ ]  Update a graph
+- [ ]  Update a vertex
+- [ ]  Update an edge
   
-- [x]  Delete a graph    OK
-- [x]  Delete a vertex   OK
-- [x]  Delete an edge    OK
+- [x]  Delete a graph
+- [x]  Delete a vertex
+- [x]  Delete an edge
   
-- [ ]  Create a node containing defined attributes KO
+- [ ]  Create a node containing defined attributes
   
-- [ ]  Query a graph     KO
-- [ ]  with a specified algorithm  KO
+- [ ]  Query a graph
+- [ ]  with a specified algorithm
