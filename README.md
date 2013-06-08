@@ -10,24 +10,25 @@ here is a free o'reilly book about it:
 http://graphdatabases.com/
 
 TODO:
+
 CRUD:
-  Create a graph    OK
-  Create a vertex   OK
-  Create an edge    OK
+- [x]  Create a graph
+- [x]  Create a vertex
+- [x]  Create an edge
 
-  Retrieve a graph  OK
-  Retrieve a vertex OK
-  Retrieve an edge  OK
+- [x]  Retrieve a graph
+- [x]  Retrieve a vertex
+- [x]  Retrieve an edg
 
-  Update a graph    KO
-  Update a vertex   KO
-  Update an edge    KO
+- [ ]  Update a graph    KO
+- [ ]  Update a vertex   KO
+- [ ]  Update an edge    KO
   
-  Delete a graph    OK
-  Delete a vertex   OK
-  Delete an edge    OK
+- [x]  Delete a graph    OK
+- [x]  Delete a vertex   OK
+- [x]  Delete an edge    OK
   
-  Create a node containing defined attributes KO
+- [ ]  Create a node containing defined attributes KO
   
-  Query a graph     KO
-  with a specified algorithm  KO
+- [ ]  Query a graph     KO
+- [ ]  with a specified algorithm  KO
