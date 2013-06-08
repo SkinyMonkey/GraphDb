@@ -11,24 +11,27 @@ http://graphdatabases.com/
 
 TODO:
 
-CRUD:
-- [x]  Create a graph
-- [x]  Create a vertex
-- [x]  Create an edge
+- [ ] CRUD Core/Interface DB/DB:
+  - [x]  Create a graph
+  - [x]  Create a vertex
+  - [x]  Create an edge
 
-- [x]  Retrieve a graph
-- [x]  Retrieve a vertex
-- [x]  Retrieve an edg
+  - [x]  Retrieve a graph
+  - [x]  Retrieve a vertex
+  - [x]  Retrieve an edg
 
-- [ ]  Update a graph
-- [ ]  Update a vertex
-- [ ]  Update an edge
+  - [ ]  Update a graph
+  - [ ]  Update a vertex
+  - [ ]  Update an edge
   
-- [x]  Delete a graph
-- [x]  Delete a vertex
-- [x]  Delete an edge
+  - [x]  Delete a graph
+  - [x]  Delete a vertex
+  - [x]  Delete an edge
   
-- [ ]  Create a node containing defined attributes
-  
+  - [ ]  Defined attributes in vertex
+
+- [ ] CRUD Protocol
+- [ ] Network
+
 - [ ]  Query a graph
 - [ ]  with a specified algorithm
