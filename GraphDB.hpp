@@ -11,18 +11,12 @@ public:
 	GraphDB()
 	  : IGraphDB(), __current(0x0)
 	  {
-	    ;
+	    this->add("default");
+	    this->use("default");
 	  }
 	~GraphDB()
 	  {}
 
-	bool		create(std::string const& graph_name)
-	  {
-	    // FIXME : catch bad_alloc?
-	    this->__graphs[graph_name] = new Graph();
-	    return (true);
-	  }
-	
 	bool		use(std::string const& graph_name)
 	  {
 	    bool res = this->__exists(graph_name);
@@ -32,17 +26,19 @@ public:
 	    return (res);
 	  }
 
-	Edge::id	add(Vertex::id from, Vertex::id to)
+	bool		add(std::string const& graph_name)
 	  {
-	    bool	res;
-	    Edge::id	id;
+	    bool res = this->__exists(graph_name);
 
-	    boost::tie(id, res)\
-	      =	boost::add_edge(from
-			       ,to
-			       ,(*this->__current));
-	    // if !res FIXME
-	    return id;
+	    // FIXME : catch bad_alloc?
+	    if (res == false)
+	      this->__graphs[graph_name] = new Graph();
+	    return (res == false);
+	  }
+	
+    	Edge::id	add(Vertex::id from, Vertex::id to)
+	  {
+	    return (Edge::add(from, to, (*this->__current)));
 	  }
 
 	Vertex::id	add(void)
@@ -50,29 +46,51 @@ public:
 	    Vertex::id	id = boost::add_vertex(*this->__current);
 	    // FIXME : set vertex attributes
 	    // *this->__current[id]
-	    return id;
+	    return (id);
+	  }
+
+	bool	remove(std::string const& graph_name)
+	  {
+	    bool res = this->__exists(graph_name);
+
+	    if (res)
+	      this->__graphs.erase(graph_name);
+	    return (res);
 	  }
 
 	bool	remove(Edge::id id)
 	  {
-	    boost::remove_edge(id, *this->__current);
+	    // FIXME : no return value?
+	    boost::remove_edge(Edge::get_rid(id), *this->__current);
 	    return (true);
 	  }
 
 	bool	remove(Vertex::id id)
 	  {
+	    // FIXME : no return value?
 	    boost::remove_vertex(id, *this->__current);
 	    return (true);
 	  }
 
+	Graph*		get(std::string const& graph_name)
+	  {
+	    bool res = this->__exists(graph_name);
+
+	    if (res == true)
+	      return (this->__graphs[graph_name]);
+	    return (0x0);
+	  }
+
 	Vertex::Vertex*	get(Vertex::id id) const
 	  {
+	    // FIXME : check si le vertex existe?
 	    return &((*this->__current)[id]);
 	  }
 
 	Edge::Edge*	get(Edge::id id) const
 	  {
-	    return &((*this->__current)[id]);
+	    // FIXME : check si l'edge existe?
+	    return &((*this->__current)[Edge::get_rid(id)]);
 	  }
 
 	/*
