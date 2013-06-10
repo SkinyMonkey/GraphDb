@@ -1,8 +1,6 @@
 #ifndef __VERTEX__
 #define __VERTEX__
 
-#include <string>
-
 namespace				Vertex
 {
   typedef struct			vertex

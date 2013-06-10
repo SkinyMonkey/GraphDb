@@ -4,31 +4,42 @@
 class Core;
 class ANetwork;
 
-class AProtocol
+namespace		Protocol
 {
-public:
-  AProtocol(){}
-  ~AProtocol(){}
-
-  void	set_core(Core* c)
+  enum 			error_code
     {
-      this->__core = c;
-    }
+      OK,
+      ALREADY_EXIST,
+      DOESNT_EXIST,
+      NOT_IMPLEMENTED
+    };
 
-  void	set_network(ANetwork* n)
+  class AProtocol
     {
-      this->__network = n;
-    }
-  
-  virtual std::string	interpret(std::string const& command) = 0;
+    public:
+      AProtocol(){}
+      ~AProtocol(){}
 
-protected:
-  Core*			__core;
-  ANetwork*		__network;
+      void	set_core(Core* c)
+	{
+	  this->__core = c;
+	}
 
-private:
-  AProtocol(const AProtocol&);
-  AProtocol& operator=(const AProtocol&);
-};
+      void	set_network(ANetwork* n)
+	{
+	  this->__network = n;
+	}
+
+      virtual std::string	interpret(std::string const& command) = 0;
+
+    protected:
+      Core*			__core;
+      ANetwork*		__network;
+
+    private:
+      AProtocol(const AProtocol&);
+      AProtocol& operator=(const AProtocol&);
+    };
+}
 
 #endif /* __APROTOCOL__ */

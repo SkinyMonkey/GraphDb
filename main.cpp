@@ -1,7 +1,9 @@
+#include <map>
+#include <string>
 #include "Core.hpp"
 #include "GraphDB.hpp"
 #include "SearchEngine.hpp"
-#include "Protocol.hpp"
+#include "TextProtocol.hpp"
 #include "Network.hpp"
 
 int	main(int argc, const char *argv[]) // FIXME : add options for conf
@@ -19,7 +21,7 @@ int	main(int argc, const char *argv[]) // FIXME : add options for conf
 
       boost::asio::io_service io_service;
       IGraphDB*		g = new GraphDB();
-      AProtocol*	p = new Protocol();
+      AProtocol*	p = new TextProtocol();
       ANetwork*		n = new Network(io_service, port, p);
       Core		c(n, g, s, p);
 

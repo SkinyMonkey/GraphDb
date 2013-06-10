@@ -3,6 +3,7 @@
 
 #include <boost/graph/adjacency_list.hpp>
 #include <utility>
+#include "IGraphDB.hpp"
 #include "vertex.hpp"
 #include "edge.hpp"
 
@@ -26,12 +27,14 @@ namespace	Edge
   
   std::map<id, rid> 		__translation;
 
-  id		add(Vertex::id from, Vertex::id to, Graph& graph)
+  id		add(Vertex::id from, Vertex::id to, Graph& graph, Protocol::error_code* error_code)
     {
       bool	res;
       rid	rid;
       id	id = std::make_pair(from, to);
 
+      // Check if vertexes exist?
+      *error_code = Protocol::OK;
       boost::tie(rid, res) = boost::add_edge(from, to, graph);
       __translation[id] = rid;
       return id;

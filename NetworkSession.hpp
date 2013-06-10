@@ -5,6 +5,7 @@
 #include <boost/bind.hpp>
 
 using boost::asio::ip::tcp;
+using namespace Protocol;
 
 class NetworkSession
 {

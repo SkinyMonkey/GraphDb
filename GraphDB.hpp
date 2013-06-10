@@ -1,9 +1,8 @@
 #ifndef __GRAPHDB__
 #define __GRAPHDB__
 
+#include "AProtocol.hpp"
 #include "Graph.hpp"
-// FIXME:
-#include "debug.hpp"
 
 class GraphDB : public IGraphDB
 {
@@ -11,34 +10,38 @@ public:
 	GraphDB()
 	  : IGraphDB(), __current(0x0)
 	  {
-	    this->add("default");
-	    this->use("default");
+	    error_code	error_code;
+	    this->add("default", &error_code);
+	    this->use("default", &error_code);
 	  }
 	~GraphDB()
 	  {}
 
-	bool		use(std::string const& graph_name)
+	void	 	use(std::string const& graph_name, error_code* code)
 	  {
-	    bool res = this->__exists(graph_name);
-
-	    if (res)
-	      this->__current = this->__graphs[graph_name];
-	    return (res);
+	    if (this->__exists(graph_name) == false)
+	      {
+		*code = DOESNT_EXIST;
+		return;
+	      }
+	    *code = OK;
+	    this->__current = this->__graphs[graph_name];
 	  }
 
-	bool		add(std::string const& graph_name)
+	void		add(std::string const& graph_name, error_code* code)
 	  {
-	    bool res = this->__exists(graph_name);
-
-	    // FIXME : catch bad_alloc?
-	    if (res == false)
-	      this->__graphs[graph_name] = new Graph();
-	    return (res == false);
+	    if (this->__exists(graph_name) == true)
+	      {
+		*code = ALREADY_EXIST;
+		return;
+	      }
+	    *code = OK;
+	    this->__graphs[graph_name] = new Graph();
 	  }
 	
-    	Edge::id	add(Vertex::id from, Vertex::id to)
+    	Edge::id	add(Vertex::id from, Vertex::id to, error_code* code)
 	  {
-	    return (Edge::add(from, to, (*this->__current)));
+	    return (Edge::add(from, to, (*this->__current), code));
 	  }
 
 	Vertex::id	add(void)
@@ -49,47 +52,53 @@ public:
 	    return (id);
 	  }
 
-	bool	remove(std::string const& graph_name)
+	void		remove(std::string const& graph_name, error_code* code)
 	  {
-	    bool res = this->__exists(graph_name);
-
-	    if (res)
-	      this->__graphs.erase(graph_name);
-	    return (res);
+	    if (this->__exists(graph_name) == false)
+	      {
+		*code = DOESNT_EXIST;
+		return;
+	      }
+	    *code = OK;
+	    this->__graphs.erase(graph_name);
 	  }
 
-	bool	remove(Edge::id id)
+	void		remove(Edge::id id, error_code* code)
 	  {
-	    // FIXME : no return value?
+	    // FIXME : check if edge exists
+	    *code = OK;
 	    boost::remove_edge(Edge::get_rid(id), *this->__current);
-	    return (true);
 	  }
 
-	bool	remove(Vertex::id id)
+	void		remove(Vertex::id id, error_code* code)
 	  {
-	    // FIXME : no return value?
+	    // FIXME : check if vertex exists
+	    *code = OK;
 	    boost::remove_vertex(id, *this->__current);
-	    return (true);
 	  }
 
-	Graph*		get(std::string const& graph_name)
+	Graph*		get(std::string const& graph_name, error_code* code)
 	  {
-	    bool res = this->__exists(graph_name);
-
-	    if (res == true)
-	      return (this->__graphs[graph_name]);
-	    return (0x0);
+	    if (this->__exists(graph_name) == false)
+	      {
+		*code = DOESNT_EXIST;
+		return NULL;
+	      }
+	    *code = OK;
+	    return (this->__graphs[graph_name]);
 	  }
 
-	Vertex::Vertex*	get(Vertex::id id) const
+	Vertex::Vertex*	get(Vertex::id id, error_code* code) const
 	  {
 	    // FIXME : check si le vertex existe?
+	    *code = OK;
 	    return &((*this->__current)[id]);
 	  }
 
-	Edge::Edge*	get(Edge::id id) const
+	Edge::Edge*	get(Edge::id id, error_code* code) const
 	  {
 	    // FIXME : check si l'edge existe?
+	    *code = OK;
 	    return &((*this->__current)[Edge::get_rid(id)]);
 	  }
 

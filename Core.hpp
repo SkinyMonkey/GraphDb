@@ -1,10 +1,12 @@
 #ifndef __CORE__
 #define __CORE__
 
+#include "AProtocol.hpp"
 #include "IGraphDB.hpp"
 #include "ISearchEngine.hpp"
-#include "AProtocol.hpp"
 #include "Configuration.hpp"
+
+using namespace Protocol;
 
 class Core
 {
@@ -28,19 +30,19 @@ public:
       ;
     }
 
-  bool		use(std::string const& graph_name)
+  void		use(std::string const& graph_name, Protocol::error_code* code)
     {
-      return this->__graphdb->use(graph_name);
+      this->__graphdb->use(graph_name, code);
     }
 
-  bool		add(std::string const& graph_name)
+  void		add(std::string const& graph_name, Protocol::error_code* code)
     {
-      return this->__graphdb->add(graph_name);
+      this->__graphdb->add(graph_name, code);
     }
 
-  Edge::id	add(Vertex::id from, Vertex::id to)
+  Edge::id	add(Vertex::id from, Vertex::id to, Protocol::error_code* code)
     {
-      return this->__graphdb->add(from, to);
+      return this->__graphdb->add(from, to, code);
     }
 
   Vertex::id	add(void)
@@ -48,19 +50,19 @@ public:
       return this->__graphdb->add();
     }
 
-  bool		remove(std::string const& graph_name)
+  void		remove(std::string const& graph_name, Protocol::error_code* code)
     {
-      return this->__graphdb->remove(graph_name);
+      this->__graphdb->remove(graph_name, code);
     }
 
-  bool		remove(Edge::id id)
+  void		remove(Edge::id id, Protocol::error_code* code)
     {
-      return this->__graphdb->remove(id);
+      this->__graphdb->remove(id, code);
     }
 
-  bool		remove(Vertex::id id)
+  void		remove(Vertex::id id, Protocol::error_code* code)
     {
-      return this->__graphdb->remove(id);
+      this->__graphdb->remove(id, code);
     }
 
 // FIXME : update/read methods, need search engine

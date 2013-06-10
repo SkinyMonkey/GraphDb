@@ -3,6 +3,8 @@
 
 #include "AProtocol.hpp"
 
+using namespace Protocol;
+
 class ANetwork
 {
 public:
