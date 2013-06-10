@@ -30,8 +30,24 @@ TODO:
   
   - [ ]  Defined attributes in vertex
 
+- [x] Network
+  - [x] receive a message
+  - [x] write a message back
+  - [x] transfer to protocol
+
 - [ ] CRUD Protocol
-- [ ] Network
+  - text protocol
+    - [ ] command parsing
+    - [ ] command check
+    - [x] use interpretation
+    - [x] add interpretation
+    - [x] remove interprtation
+
+- [ ] minimalistic client in python
+    - [x] send a query
+    - [ ] parse query
+    - [ ] check query
+    - [ ] interpret the answer
 
 - [ ]  Query a graph
 - [ ]  with a specified algorithm
