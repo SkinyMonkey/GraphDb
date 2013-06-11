@@ -15,6 +15,7 @@ TODO:
   - [x]  Create a graph
   - [x]  Create a vertex
   - [x]  Create an edge
+  - [ ]  Name an edge
 
   - [x]  Retrieve a graph
   - [x]  Retrieve a vertex
