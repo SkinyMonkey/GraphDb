@@ -9,6 +9,11 @@ If you interested about working on this project with me
 here is a free o'reilly book about it:
 http://graphdatabases.com/
 
+Also, as i use the boost graph library, you might be interested about reading this book:
+http://www.boost.org/doc/libs/1_53_0/libs/graph/doc/index.html
+
+Which, of what i've seen so far, seems more clear and accurate than the online documentation.
+
 TODO:
 
 - [ ] CRUD Core/Interface DB/DB:
