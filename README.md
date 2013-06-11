@@ -1,7 +1,7 @@
 GraphDb
 =======
 
-A graph database written in C++ with boost graphs.
+A graph database written in C++ with boost graphs and based on index free adjacency.
 I'm currently studying a book about graph database to design the search engine.
 
 If you interested about working on this project with me
