@@ -14,6 +14,9 @@ http://books.google.fr/books/about/Boost_Graph_Library.html?id=CPi7g1hjyIYC&redi
 
 Which, of what i've seen so far, seems more clear and accurate than the online documentation.
 
+One of my main final goal is to offer a server that can work on different kind of graph,
+depending on user's needs and a set of algorithm to apply on it.
+
 TODO:
 
 - [ ] CRUD Core/Interface DB/DB:
