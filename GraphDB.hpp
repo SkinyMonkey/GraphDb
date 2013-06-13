@@ -1,8 +1,7 @@
 #ifndef __GRAPHDB__
 #define __GRAPHDB__
 
-#include "AProtocol.hpp"
-#include "Graph.hpp"
+using namespace Protocol;
 
 class GraphDB : public IGraphDB
 {
@@ -14,105 +13,95 @@ public:
 	    this->add("default", &error_code);
 	    this->use("default", &error_code);
 	  }
+
 	~GraphDB()
 	  {}
 
-	void	 	use(std::string const& graph_name, error_code* code)
+	void	 	use(std::string const& graph_name, error_code* error_code)
 	  {
 	    if (this->__exists(graph_name) == false)
 	      {
-		*code = DOESNT_EXIST;
+		*error_code = DOESNT_EXIST;
 		return;
 	      }
-	    *code = OK;
+	    *error_code = OK;
 	    this->__current = this->__graphs[graph_name];
 	  }
 
-	void		add(std::string const& graph_name, error_code* code)
+	void		add(std::string const& graph_name, error_code* error_code)
 	  {
 	    if (this->__exists(graph_name) == true)
 	      {
-		*code = ALREADY_EXIST;
+		*error_code = ALREADY_EXIST;
 		return;
 	      }
-	    *code = OK;
-	    this->__graphs[graph_name] = new Graph();
+	    *error_code = OK;
+	    // FIXME : add graph type to get a custom one
+	    this->__graphs[graph_name] = new Graph<
+					boost::adjacency_list<boost::vecS
+						      ,boost::vecS
+						      ,boost::undirectedS
+						      ,Vertex::Vertex
+						      ,Edge::Edge> >();
 	  }
 	
-    	Edge::id	add(Vertex::id from, Vertex::id to, error_code* code)
+    	Edge::id	add(Vertex::id from, Vertex::id to, error_code* error_code)
 	  {
-	    return (Edge::add(from, to, (*this->__current), code));
+	    return this->__current->add(from, to, error_code);
 	  }
 
+	// FIXME : set vertex attributes
 	Vertex::id	add(void)
 	  {
-	    Vertex::id	id = boost::add_vertex(*this->__current);
-	    // FIXME : set vertex attributes
-	    // *this->__current[id]
-	    return (id);
+	    return this->__current->add();
 	  }
 
-	void		remove(std::string const& graph_name, error_code* code)
+	void		remove(std::string const& graph_name, error_code* error_code)
 	  {
 	    if (this->__exists(graph_name) == false)
 	      {
-		*code = DOESNT_EXIST;
+		*error_code = DOESNT_EXIST;
 		return;
 	      }
-	    *code = OK;
+	    *error_code = OK;
 	    this->__graphs.erase(graph_name);
 	  }
 
-	void		remove(Edge::id id, error_code* code)
+	void		remove(Edge::id id, error_code* error_code)
 	  {
-	    // FIXME : check if edge exists
-	    *code = OK;
-	    boost::remove_edge(Edge::get_rid(id), *this->__current);
+	    this->__current->remove(id, error_code);
 	  }
 
-	void		remove(Vertex::id id, error_code* code)
+	void		remove(Vertex::id id, error_code* error_code)
 	  {
-	    // FIXME : check if vertex exists
-	    *code = OK;
-	    boost::remove_vertex(id, *this->__current);
+	    this->__current->remove(id, error_code);
 	  }
 
-	Graph*		get(std::string const& graph_name, error_code* code)
+	AGraph*		get(std::string const& graph_name, error_code* error_code)
 	  {
 	    if (this->__exists(graph_name) == false)
 	      {
-		*code = DOESNT_EXIST;
+		*error_code = DOESNT_EXIST;
 		return NULL;
 	      }
-	    *code = OK;
+	    *error_code = OK;
 	    return (this->__graphs[graph_name]);
 	  }
 
-	Vertex::Vertex*	get(Vertex::id id, error_code* code) const
+	Vertex::Vertex*	get(Vertex::id id, error_code* error_code) const
 	  {
-	    // FIXME : check si le vertex existe?
-	    *code = OK;
-	    return &((*this->__current)[id]);
+	    return this->__current->get(id, error_code);
 	  }
 
-	Edge::Edge*	get(Edge::id id, error_code* code) const
+	Edge::Edge*	get(Edge::id id, error_code* error_code) const
 	  {
-	    // FIXME : check si l'edge existe?
-	    *code = OK;
-	    return &((*this->__current)[Edge::get_rid(id)]);
+	    return this->__current->get(id, error_code);
 	  }
 
-	/*
-	**
-	// FIXME : test	
-	template<typename T>
-	T*		get(T::id) const
+	std::string	dump(std::string const& name, error_code* error_code) const
 	  {
-	    return &this->__current[id];
+	    return this->__current->dump(name, error_code);
 	  }
-
-	// specialize?
-	*/
 
 private:
 	GraphDB(const GraphDB&);
@@ -123,9 +112,8 @@ private:
 	    return this->__graphs.find(graph_name) != this->__graphs.end();
 	  }
 
-	Graph*				__current;
-	std::map<std::string, Graph*>	__graphs;
+	AGraph*				__current;
+	std::map<std::string, AGraph*>	__graphs;
 };
-
 
 #endif /* __GRAPHDB__ */

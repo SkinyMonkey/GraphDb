@@ -1,11 +1,13 @@
 #ifndef __EDGE__
 #define __EDGE__
 
-namespace				Edge
+namespace					Edge
 {
-  typedef struct 			edge
+  typedef std::pair<Vertex::id, Vertex::id>	id;
+  typedef struct 				edge
     {
-    }					Edge;
+      id					uid;
+    }						Edge;
 }
 
 #endif /* __EDGE__ */

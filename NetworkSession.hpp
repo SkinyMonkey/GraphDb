@@ -39,7 +39,6 @@ public:
       {
 	if (!error)
 	  {
-	    std::cout << "bytes_transferred :" << bytes_transferred << std::endl;
 	    std::cout << this->__data << std::endl;
 	    std::string result = this->__protocol->interpret(std::string(this->__data));
 	    ::bzero(this->__data, MAX_LENGTH);

@@ -1,12 +1,13 @@
 #ifndef __VERTEX__
 #define __VERTEX__
 
-namespace				Vertex
+namespace			Vertex
 {
-  typedef struct			vertex
+  typedef unsigned long		id;
+  typedef struct		vertex
     {
-      std::string			name;
-    }					Vertex;
+      id			uid;
+    }				Vertex;
 }
 
 #endif /* __VERTEX__ */

@@ -1,9 +1,25 @@
-#include <map>
 #include <string>
-#include "Core.hpp"
+#include <map>
+#include <utility>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+#include "Vertex.hpp"
+#include "Edge.hpp"
+#include "AProtocol.hpp"
+#include "ISearchEngine.hpp"
+#include "Configuration.hpp"
+#include "AGraph.hpp"
+#include "Graph.hpp"
+#include "IGraphDB.hpp"
 #include "GraphDB.hpp"
+#include "Core.hpp"
+#include "ADumper.hpp"
+#include "Dumper.hpp"
 #include "SearchEngine.hpp"
 #include "TextProtocol.hpp"
+#include "ANetwork.hpp"
+#include "NetworkSession.hpp"
 #include "Network.hpp"
 
 int	main(int argc, const char *argv[]) // FIXME : add options for conf
@@ -25,6 +41,19 @@ int	main(int argc, const char *argv[]) // FIXME : add options for conf
       ANetwork*		n = new Network(io_service, port, p);
       Core		c(n, g, s, p);
 
+      /*
+      // FIXME : Test adjacent vertices
+      // graph -> "default"
+      Vertex::id v = g->add();
+      error_code	error_code;
+
+      adjacency_iterator	begin;
+      adjacency_iterator	end;
+
+      boost::tie(begin, end) = adjacent_vertices(v, *g->get("default", &error_code));
+      // ENDFIXME
+      */
+
       std::cout << "Launching server on port " << port << std::endl;
       io_service.run();
     }
@@ -34,33 +63,3 @@ int	main(int argc, const char *argv[]) // FIXME : add options for conf
     }
   return 0;
 }
-/*
-  p->set_core(&c);
-  class JSON{};
-  std::vector<JSON>	test;
-  p->batch<std::vector<JSON> >(0, test);  
-  
-  int	i, j, count;
-  int	n = 1000;
-  for (i = 0; i < n; ++i)
-    {
-      std::cout << i + 1 << "\b\b\b\b\b\b\b\b\b\b";
-      c.add();
-    }
-  std::cout << std::endl;
-  std::cout << n << " vertex created" << std::endl;
-  count = 0;
-  for (i = 0; i < n; ++i)
-    {
-      for (j = 0; j < n; j++)
-        {
-	  if (j != i)
-	    {
-	      c.add(i, j);
-	      ++count;
-	      std::cout << count << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b";
-	    }
-        }
-    }
-  return 0;
-  */

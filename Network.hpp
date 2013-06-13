@@ -3,8 +3,6 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include "ANetwork.hpp"
-#include "NetworkSession.hpp"
 
 class Network : public ANetwork
 {

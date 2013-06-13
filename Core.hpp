@@ -1,11 +1,6 @@
 #ifndef __CORE__
 #define __CORE__
 
-#include "AProtocol.hpp"
-#include "IGraphDB.hpp"
-#include "ISearchEngine.hpp"
-#include "Configuration.hpp"
-
 using namespace Protocol;
 
 class Core
@@ -63,6 +58,11 @@ public:
   void		remove(Vertex::id id, Protocol::error_code* code)
     {
       this->__graphdb->remove(id, code);
+    }
+
+  std::string	dump(std::string const& name, Protocol::error_code* code) const
+    {
+      return this->__graphdb->dump(name, code);
     }
 
 // FIXME : update/read methods, need search engine

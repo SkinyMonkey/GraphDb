@@ -1,10 +1,6 @@
 #ifndef __IGRAPHDB__
 #define __IGRAPHDB__
 
-#include "Edge.hpp"
-#include "Vertex.hpp"
-#include "Graph.hpp"
-
 class IGraphDB
 {
 public:
@@ -23,9 +19,10 @@ public:
   virtual void		remove(Vertex::id, Protocol::error_code*) = 0;
 
   // FIXME : how to add const to this get on graph?
-  virtual Graph*		get(std::string const&, Protocol::error_code*) = 0;
+  virtual AGraph*		get(std::string const&, Protocol::error_code*) = 0;
   virtual Vertex::Vertex*	get(Vertex::id, Protocol::error_code*) const = 0;
   virtual Edge::Edge*		get(Edge::id, Protocol::error_code*) const = 0;
+  virtual std::string		dump(std::string const& name, Protocol::error_code*) const = 0;
 
 protected:
   IGraphDB(const IGraphDB&);

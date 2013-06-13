@@ -1,8 +1,6 @@
 #ifndef __SEARCHENGINE__
 #define __SEARCHENGINE__
 
-#include "ISearchEngine.hpp"
-
 class SearchEngine : public ISearchEngine
 {
 public:

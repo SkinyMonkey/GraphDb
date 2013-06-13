@@ -3,7 +3,6 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
-#include "AProtocol.hpp"
 
 class TextProtocol : public AProtocol
 {
@@ -29,6 +28,7 @@ public:
       this->__execution["add"] = &TextProtocol::add;
       this->__execution["remove"] = &TextProtocol::remove;
       this->__execution["batch"] = &TextProtocol::remove;
+      this->__execution["dump"] = &TextProtocol::dump;
     }
 
   ~TextProtocol(){}
@@ -36,16 +36,12 @@ public:
   std::string		interpret(std::string const& command)
     {
       std::vector<std::string>	split_buffer;
-      std::cout << "To interpret : " << command << std::endl;
 
       boost::split(split_buffer ,command ,boost::is_any_of(" "));
-      std::cout << "Command [" << split_buffer[COMMAND] << "]" << std::endl;
       execution_table::iterator it = this->__execution.find(split_buffer[COMMAND]);
       if (it != this->__execution.end())
       {
 	interpretation	function = (*it).second;
-
-	std::cout << "Command found" << std::endl;
 	return (this->*function)(split_buffer);
       }
       std::cout << "Command not found" << std::endl;
@@ -57,12 +53,12 @@ private:
   TextProtocol& operator=(const TextProtocol&);
 
   // FIXME : add all the parsing and checks of args
-  std::string	answer(error_code *code
+  std::string	answer(error_code *error_code
 		      ,std::string const& type
 		      ,std::string const& infos = "")
     { 
-      if (*code != OK)
-	return ("ERROR " + type + infos + errors[*code]);
+      if (*error_code != OK)
+	return ("ERROR " + type + infos + errors[*error_code]);
       return (type + infos);
     }
 
@@ -140,6 +136,17 @@ private:
 
       return answer(&error_code, "BATCH ");
     }
+
+  std::string	dump(std::vector<std::string>& args)
+    {
+      error_code	error_code;
+
+      std::string dump = this->__core->dump(args[USE_NAME], &error_code);
+      return answer(&error_code, "DUMP " + dump);
+    }
+
+      // pouvoir acceder au graph ici pour pouvoir appliquer un visitor graphviz
+      // au lieu de le faire a la main
 
   execution_table		__execution;
 };

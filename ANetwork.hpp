@@ -1,8 +1,6 @@
 #ifndef __INETWORK__
 #define __INETWORK__
 
-#include "AProtocol.hpp"
-
 using namespace Protocol;
 
 class ANetwork

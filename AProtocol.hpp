@@ -11,7 +11,8 @@ namespace		Protocol
       OK,
       ALREADY_EXIST,
       DOESNT_EXIST,
-      NOT_IMPLEMENTED
+      NOT_IMPLEMENTED,
+      CANT_ADD
     };
 
   class AProtocol
