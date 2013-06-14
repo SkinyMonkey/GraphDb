@@ -10,7 +10,8 @@ public:
 private:
 	SearchEngine(const SearchEngine&);
 	SearchEngine& operator=(const SearchEngine&);
-	/* data */
+
+//	std::list<Vertex*> ;
 };
 
 

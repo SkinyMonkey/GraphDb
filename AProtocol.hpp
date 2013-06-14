@@ -12,7 +12,11 @@ namespace		Protocol
       ALREADY_EXIST,
       DOESNT_EXIST,
       NOT_IMPLEMENTED,
-      CANT_ADD
+      CANT_ADD,
+      NO_NAME,
+      NO_FROM,
+      NO_TO,
+      ERROR_CODE_SIZE
     };
 
   class AProtocol

@@ -6,8 +6,9 @@
 
 class TextProtocol : public AProtocol
 {
-  typedef std::string	(TextProtocol::*interpretation)(std::vector<std::string>&);
+  typedef std::string	(TextProtocol::*interpretation)(std::vector<std::string> const&);
   typedef std::map<std::string, interpretation>	execution_table;
+
   enum	placeholders
     {
       COMMAND,
@@ -18,7 +19,7 @@ class TextProtocol : public AProtocol
       TO
     };
 
-  static std::string const	errors[4];
+  static std::string const	errors[Protocol::ERROR_CODE_SIZE];
 
 public:
   TextProtocol()
@@ -62,7 +63,7 @@ private:
       return (type + infos);
     }
 
-  std::string	use(std::vector<std::string>& args)
+  std::string	use(std::vector<std::string> const& args)
     {
       error_code	error_code;
 
@@ -70,13 +71,13 @@ private:
       return answer(&error_code, "GRAPH ", args[USE_NAME]);
     }
 
-  std::string	add(std::vector<std::string>& args)
+  std::string	add(std::vector<std::string> const& args)
     {
       error_code	error_code;
 
       if (args[TYPE] == "vertex")
 	{
-	  Vertex::id id = this->__core->add();
+	  Vertex::id id = this->__core->add(this->__check(args, NAME, ""), args);
 	  error_code = OK;
 	  return answer(&error_code
 		       ,"VERTEX "
@@ -84,76 +85,112 @@ private:
 	}
       else if (args[TYPE] == "graph")
 	{
-	  this->__core->add(args[NAME], &error_code);
+	  if (this->__check(args, NAME, &error_code, NO_NAME) == true)
+	    this->__core->add(args[NAME], &error_code);
 	  return answer(&error_code
 		       ,"GRAPH "
 		       ,args[NAME]);
 	}
       else if (args[TYPE] == "edge")
 	{
-	  Vertex::id from = std::atol(args[FROM].c_str());
-	  Vertex::id to = std::atol(args[TO].c_str());
-	  Edge::id   id	= this->__core->add(from, to, &error_code);
+	  if (this->__check(args, FROM, &error_code, NO_FROM) == true\
+	   && this->__check(args, TO, &error_code, NO_TO) == true)
+	    {
+	      Vertex::id from = std::atol(args[FROM].c_str());
+	      Vertex::id to = std::atol(args[TO].c_str());
+	      Edge::id   id = this->__core->add(from, to, &error_code);
 
-	  return answer(&error_code
-		       ,"EDGE "
-		       ,boost::lexical_cast<std::string>(id.first)
-		       +" "
-		       +boost::lexical_cast<std::string>(id.second));
+	      return answer(&error_code
+		  ,"EDGE "
+		  ,boost::lexical_cast<std::string>(id.first)
+		  +" "
+		  +boost::lexical_cast<std::string>(id.second));
+	    }
+	  return answer(&error_code, "EDGE ", "");
 	}
       error_code = DOESNT_EXIST;
       return answer(&error_code, "TYPE ", args[TYPE]);
     }
 
-  std::string	remove(std::vector<std::string>& args)
+  std::string	remove(std::vector<std::string> const& args)
     {
       error_code	error_code;
 
       if (args[TYPE] == "vertex")
 	{
-	  this->__core->remove(std::atoi(args[NAME].c_str()), &error_code);
-	  return answer(&error_code, "OK");
+	  if (this->__check(args, NAME, &error_code, NO_NAME) == true)
+	    this->__core->remove(std::atoi(args[NAME].c_str()), &error_code);
+	  return answer(&error_code, "RM");
 	}
       else if (args[TYPE] == "graph")
 	{
-	  this->__core->remove(args[NAME], &error_code);
-	  return answer(&error_code, "OK");
+	  if (this->__check(args, NAME, &error_code, NO_NAME) == true)
+	    this->__core->remove(args[NAME], &error_code);
+	  return answer(&error_code, "RM");
 	}
       else if (args[TYPE] == "edge")
 	{
-	  this->__core->remove(std::make_pair(std::atol(args[FROM].c_str())
+	  if (this->__check(args, FROM, &error_code, NO_FROM) == true\
+	   && this->__check(args, TO, &error_code, NO_TO) == true)
+	    this->__core->remove(std::make_pair(std::atol(args[FROM].c_str())
 					      ,std::atol(args[TO].c_str()))
 			      ,&error_code);
-	  return answer(&error_code, "OK");
+	  return answer(&error_code, "RM");
 	}
       error_code = DOESNT_EXIST;
       return answer(&error_code, "TYPE ", args[TYPE]);
     }
 
-  std::string	batch(std::vector<std::string>& args)
+  std::string	batch(std::vector<std::string> const& args)
     {
       error_code	error_code = NOT_IMPLEMENTED;
 
       return answer(&error_code, "BATCH ");
     }
 
-  std::string	dump(std::vector<std::string>& args)
+  std::string	dump(std::vector<std::string> const& args)
     {
       error_code	error_code;
 
-      std::string dump = this->__core->dump(args[USE_NAME], &error_code);
+      std::string dump = this->__core->dump(args[USE_NAME], args[NAME], &error_code);
       return answer(&error_code, "DUMP " + dump);
     }
 
-      // pouvoir acceder au graph ici pour pouvoir appliquer un visitor graphviz
-      // au lieu de le faire a la main
+  std::string	__check(std::vector<std::string> const& args\
+		       ,unsigned int to_check\
+		       ,std::string const& default_) const
+    {
+      if (args.size() - 1 < to_check)
+	return default_;
+      return args[to_check];
+    }
+
+  bool		__check(std::vector<std::string> const& args\
+			,unsigned int to_check\
+			,Protocol::error_code* error_code\
+			,Protocol::error_code error) const
+    {
+      if (args.size() - 1 < to_check)
+	{
+	  *error_code = error;
+	  return false;
+	}
+      return true;
+    }
+
 
   execution_table		__execution;
 };
 
-std::string const	TextProtocol::errors[4] = {" OK"
-	       ," EXIST"
-	       ," NOT EXIST"
-	       ," NOT IMPLEMENTED"};
+std::string const	TextProtocol::errors[Protocol::ERROR_CODE_SIZE] = {\
+ " OK"
+," EXIST"
+," NOT EXIST"
+," NOT IMPLEMENTED"
+," CANT ADD"
+," NO NAME"
+," NO FROM"
+," NO TO"
+};
 
 #endif /* __TEXTPROTOCOL__ */

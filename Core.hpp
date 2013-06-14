@@ -15,6 +15,7 @@ public:
       , __protocol(p)
       , __graphdb(g)
       , __search_engine(s)
+      , __dumper_manager(g)
   {
     p->set_network(n);
     p->set_core(this);
@@ -40,9 +41,9 @@ public:
       return this->__graphdb->add(from, to, code);
     }
 
-  Vertex::id	add(void)
+  Vertex::id	add(std::string const& vertex_name, std::vector<std::string> const& args)
     {
-      return this->__graphdb->add();
+      return this->__graphdb->add(vertex_name, args);
     }
 
   void		remove(std::string const& graph_name, Protocol::error_code* code)
@@ -60,9 +61,9 @@ public:
       this->__graphdb->remove(id, code);
     }
 
-  std::string	dump(std::string const& name, Protocol::error_code* code) const
+  std::string	dump(std::string const& graph_name, std::string const& dumper_name, Protocol::error_code* error_code) const
     {
-      return this->__graphdb->dump(name, code);
+      return this->__dumper_manager(graph_name, dumper_name, error_code);
     }
 
 // FIXME : update/read methods, need search engine
@@ -70,10 +71,11 @@ private:
   Core(const Core&);
   Core& operator=(const Core&);
 
-  Configuration		__configuration;
-  AProtocol*		__protocol;
-  IGraphDB*		__graphdb;
-  ISearchEngine*	__search_engine;
+  Configuration				__configuration;
+  AProtocol*				__protocol;
+  IGraphDB*				__graphdb;
+  ISearchEngine*			__search_engine;
+  DumperManager				__dumper_manager;
 };
 
 #endif /* __CORE__ */

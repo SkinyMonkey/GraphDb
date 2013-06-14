@@ -7,6 +7,7 @@ namespace			Vertex
   typedef struct		vertex
     {
       id			uid;
+      std::string		name;
     }				Vertex;
 }
 
