@@ -23,6 +23,7 @@ TODO:
   - [x]  Create a graph
   - [x]  Create a vertex
   - [x]  Create an edge
+  - [x]  Name a vertex
   - [ ]  Name an edge
 
   - [x]  Retrieve a graph
@@ -46,11 +47,18 @@ TODO:
 
 - [ ] CRUD Protocol
   - text protocol
-    - [ ] command parsing
-    - [ ] command check
+    - [x] command parsing
+    - [x] command check
     - [x] use interpretation
     - [x] add interpretation
-    - [x] remove interprtation
+    - [x] remove interpretation
+    - [x] dump
+
+- [ ] Dumpers
+  - [x] manager
+  - [x] graphviz
+  - [ ] json
+  - [ ] yaml
 
 - [ ] minimalistic client in python
     - [x] send a query
