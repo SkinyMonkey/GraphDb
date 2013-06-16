@@ -26,21 +26,21 @@ public:
       return this->__vertex_count;
     }
 
-  Edge::id		add(Vertex::id const from, Vertex::id const to, Protocol::error_code* error_code)
+  Edge::id		add(Vertex::id const& from, Vertex::id const& to, std::string const& edge_name, Protocol::error_code& error_code)
     {
-      bool		res;
       typename G::edge_descriptor id;
-      Edge::id edge_id = std::make_pair(from, to);
+      bool		res;
+      Edge::id 		edge_id(from, to, edge_name);
 
       if (this->__exists(from) == false
 	|| this->__exists(to) == false)
 	{
-	  *error_code = Protocol::DOESNT_EXIST;
+	  error_code = Protocol::DOESNT_EXIST;
 	  return edge_id;
 	}
       if (this->__exists(edge_id) == true)
 	{ 
-	  *error_code = Protocol::ALREADY_EXIST;
+	  error_code = Protocol::ALREADY_EXIST;
 	  return edge_id;
 	}
 
@@ -49,15 +49,16 @@ public:
 			    this->__vertex_mapping[to], *this);
       if (res == false)
 	{
-	  *error_code = Protocol::CANT_ADD;
+	  error_code = Protocol::CANT_ADD;
 	  return edge_id;
 	}
-      *error_code = Protocol::OK;
+      (*this)[id].name = edge_name;
+      error_code = Protocol::OK;
       this->__edge_mapping[edge_id] = id;
       return edge_id;
     }
 
-  void			remove(Vertex::id const id, Protocol::error_code* error_code)
+  void			remove(Vertex::id const id, Protocol::error_code& error_code)
     {
       if (this->__exists_error(id, error_code) == false)
 	return;
@@ -65,21 +66,21 @@ public:
       this->__vertex_mapping.erase(id);
     }
 
-  void			remove(Edge::id const& id, Protocol::error_code* error_code)
+  void			remove(Edge::id const& id, Protocol::error_code& error_code)
     {
       if (this->__exists_error(id, error_code) == false)
 	return;
       boost::remove_edge(this->__edge_mapping[id], *this);
     }
 
-  Vertex::Vertex*	get(Vertex::id const id, Protocol::error_code* error_code)
+  Vertex::Vertex*	get(Vertex::id const id, Protocol::error_code& error_code)
     {
       if (this->__exists_error(id, error_code) == false)
 	return NULL;
       return (&(*this)[this->__vertex_mapping[id]]);
     }
 
-  Edge::Edge*		get(Edge::id const& id, Protocol::error_code* error_code)
+  Edge::Edge*		get(Edge::id const& id, Protocol::error_code& error_code)
     {
       if (this->__exists_error(id, error_code) == false)
 	return NULL;
@@ -88,14 +89,14 @@ public:
 
 private:
   template<typename Target>
-  bool			__exists_error(Target id, Protocol::error_code* error_code) const
+  bool			__exists_error(Target id, Protocol::error_code& error_code) const
     {
       if (this->__exists(id) == false)
 	{
-	  *error_code = Protocol::DOESNT_EXIST;
+	  error_code = Protocol::DOESNT_EXIST;
 	  return (false);
 	}
-      *error_code = Protocol::OK;
+      error_code = Protocol::OK;
       return (true);
     }
 
@@ -114,9 +115,10 @@ private:
       return this->__dumpers.find(name) != this->__dumpers.end();
     }
 
-  Vertex::id							__vertex_count;
-  std::map<Vertex::id, typename G::vertex_descriptor>		__vertex_mapping;
-  std::map<Edge::id, typename G::edge_descriptor>		__edge_mapping;
+  Vertex::id						__vertex_count;
+  // FIXME : change Data structure?
+  std::map<Vertex::id, typename G::vertex_descriptor>	__vertex_mapping;
+  std::map<Edge::id, typename G::edge_descriptor>	__edge_mapping;
 };
 
 #endif /* ____GRAPH__ */

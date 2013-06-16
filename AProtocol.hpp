@@ -16,6 +16,8 @@ namespace		Protocol
       NO_NAME,
       NO_FROM,
       NO_TO,
+      NO_TYPE,
+      NO_COMMAND,
       ERROR_CODE_SIZE
     };
 
@@ -39,7 +41,7 @@ namespace		Protocol
 
     protected:
       Core*			__core;
-      ANetwork*		__network;
+      ANetwork*			__network;
 
     private:
       AProtocol(const AProtocol&);

@@ -9,5 +9,4 @@ typedef __Graph<boost::adjacency_list<boost::vecS
 	       ,Vertex::Vertex
 	      ,Edge::Edge> > Graph;
 
-
 #endif /* __GRAPH__ */

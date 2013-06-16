@@ -10,7 +10,7 @@ public:
     {}
   ~GraphvizDumper() {}
 
-  std::string	operator()(Graph const* graph, Protocol::error_code* error_code) const
+  std::string	operator()(Graph const* graph, Protocol::error_code& error_code) const
     {
       std::ostringstream out;
 

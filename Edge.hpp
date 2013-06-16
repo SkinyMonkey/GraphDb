@@ -1,13 +1,17 @@
 #ifndef __EDGE__
 #define __EDGE__
 
-namespace					Edge
+#include <boost/tuple/tuple.hpp>
+#include <boost/tuple/tuple_comparison.hpp>
+
+namespace							Edge
 {
-  typedef std::pair<Vertex::id, Vertex::id>	id;
-  typedef struct 				edge
+  typedef boost::tuple<Vertex::id, Vertex::id, std::string>	id;
+  typedef struct 						edge
     {
-      id					uid;
-    }						Edge;
+      id							uid;
+      std::string						name;
+    }								Edge;
 }
 
 #endif /* __EDGE__ */

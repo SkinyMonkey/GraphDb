@@ -9,38 +9,38 @@ public:
 	  {
 	    Protocol::error_code	error_code;
 
-	    this->add("default", &error_code);
-	    this->use("default", &error_code);
+	    this->add("default", error_code);
+	    this->use("default", error_code);
 	  }
 
 	~GraphDB()
 	  {}
 
-	void	 	use(std::string const& graph_name, Protocol::error_code* error_code)
+	void	 	use(std::string const& graph_name, Protocol::error_code& error_code)
 	  {
 	    if (this->__exists(graph_name) == false)
 	      {
-		*error_code = Protocol::DOESNT_EXIST;
+		error_code = Protocol::DOESNT_EXIST;
 		return;
 	      }
-	    *error_code = Protocol::OK;
+	    error_code = Protocol::OK;
 	    this->__current = this->__graphs[graph_name];
 	  }
 
-	void		add(std::string const& graph_name, Protocol::error_code* error_code)
+	void		add(std::string const& graph_name, Protocol::error_code& error_code)
 	  {
 	    if (this->__exists(graph_name) == true)
 	      {
-		*error_code = Protocol::ALREADY_EXIST;
+		error_code = Protocol::ALREADY_EXIST;
 		return;
 	      }
-	    *error_code = Protocol::OK;
+	    error_code = Protocol::OK;
 	    this->__graphs[graph_name] = new Graph();
 	  }
 	
-    	Edge::id	add(Vertex::id from, Vertex::id to, Protocol::error_code* error_code)
+    	Edge::id	add(Vertex::id const from, Vertex::id const to, std::string const& name, Protocol::error_code& error_code)
 	  {
-	    return this->__current->add(from, to, error_code);
+	    return this->__current->add(from, to, name, error_code);
 	  }
 
 	// FIXME : set vertex attributes
@@ -49,44 +49,44 @@ public:
 	    return this->__current->add(vertex_name, args);
 	  }
 
-	void		remove(std::string const& graph_name, Protocol::error_code* error_code)
+	void		remove(std::string const& graph_name, Protocol::error_code& error_code)
 	  {
 	    if (this->__exists(graph_name) == false)
 	      {
-		*error_code = Protocol::DOESNT_EXIST;
+		error_code = Protocol::DOESNT_EXIST;
 		return;
 	      }
-	    *error_code = Protocol::OK;
+	    error_code = Protocol::OK;
 	    this->__graphs.erase(graph_name);
 	  }
 
-	void		remove(Edge::id id, Protocol::error_code* error_code)
+	void		remove(Vertex::id const id, Protocol::error_code& error_code)
 	  {
 	    this->__current->remove(id, error_code);
 	  }
 
-	void		remove(Vertex::id id, Protocol::error_code* error_code)
+	void		remove(Edge::id const& id, Protocol::error_code& error_code)
 	  {
 	    this->__current->remove(id, error_code);
 	  }
 
-	Graph*		get(std::string const& graph_name, Protocol::error_code* error_code)
+	Graph*		get(std::string const& graph_name, Protocol::error_code& error_code) const
 	  {
 	    if (this->__exists(graph_name) == false)
 	      {
-		*error_code = Protocol::DOESNT_EXIST;
+		error_code = Protocol::DOESNT_EXIST;
 		return NULL;
 	      }
-	    *error_code = Protocol::OK;
-	    return (this->__graphs[graph_name]);
+	    error_code = Protocol::OK;
+	    return (this->__graphs.at(graph_name));
 	  }
 
-	Vertex::Vertex*	get(Vertex::id id, Protocol::error_code* error_code) const
+	Vertex::Vertex*	get(Vertex::id const id, Protocol::error_code& error_code) const
 	  {
 	    return this->__current->get(id, error_code);
 	  }
 
-	Edge::Edge*	get(Edge::id id, Protocol::error_code* error_code) const
+	Edge::Edge*	get(Edge::id const& id, Protocol::error_code& error_code) const
 	  {
 	    return this->__current->get(id, error_code);
 	  }

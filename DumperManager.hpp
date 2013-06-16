@@ -14,17 +14,17 @@ public:
   ~DumperManager()
     {}
 
-  std::string	operator()(std::string const& graph_name, std::string const& dumper_name, Protocol::error_code* error_code) const
+  std::string	operator()(std::string const& graph_name, std::string const& dumper_name, Protocol::error_code& error_code) const
     {
       if (this->__exists(dumper_name) == false)
 	{
-	  *error_code = Protocol::DOESNT_EXIST;
+	  error_code = Protocol::DOESNT_EXIST;
 	  return std::string("");
 	}
-      *error_code = Protocol::OK;
+      error_code = Protocol::OK;
 
       Graph*	current = this->__graphdb->get(graph_name, error_code);
-      if (*error_code != Protocol::OK)
+      if (error_code != Protocol::OK)
 	return std::string("");
       return (*this->__dumpers.at(dumper_name))(current, error_code);
     }
