@@ -9,6 +9,8 @@ public:
 	  {
 	    Protocol::error_code	error_code;
 
+      init_graph_types();
+
 	    this->add("default", error_code);
 	    this->use("default", error_code);
 	  }
@@ -16,28 +18,28 @@ public:
 	~GraphDB()
 	  {}
 
-	void	 	use(std::string const& graph_name, Protocol::error_code& error_code)
-	  {
-	    if (this->__exists(graph_name) == false)
-	      {
-		error_code = Protocol::DOESNT_EXIST;
-		return;
-	      }
-	    error_code = Protocol::OK;
-	    this->__current = this->__graphs[graph_name];
-	  }
+  void	 	use(std::string const& graph_name, Protocol::error_code& error_code)
+  {
+    if (this->__exists(graph_name) == false)
+    {
+      error_code = Protocol::DOESNT_EXIST;
+      return;
+    }
+    error_code = Protocol::OK;
+    this->__current = this->__graphs[graph_name];
+  }
 
-	void		add(std::string const& graph_name, Protocol::error_code& error_code)
-	  {
-	    if (this->__exists(graph_name) == true)
-	      {
-		error_code = Protocol::ALREADY_EXIST;
-		return;
-	      }
-	    error_code = Protocol::OK;
-	    this->__graphs[graph_name] = new Graph();
-	  }
-	
+  void		add(std::string const& graph_name, Protocol::error_code& error_code)
+  {
+    if (this->__exists(graph_name) == true)
+    {
+      error_code = Protocol::ALREADY_EXIST;
+      return;
+    }
+    error_code = Protocol::OK;
+    this->__graphs[graph_name] = new Graph();
+  }
+
     	Edge::id	add(Vertex::id const from, Vertex::id const to, std::string const& name, Protocol::error_code& error_code)
 	  {
 	    return this->__current->add(from, to, name, error_code);
@@ -74,12 +76,12 @@ public:
 	  {
 	    if (this->__exists(graph_name) == false)
 	      {
-		error_code = Protocol::DOESNT_EXIST;
-		return NULL;
-	      }
-	    error_code = Protocol::OK;
-	    return (this->__graphs.at(graph_name));
-	  }
+          error_code = Protocol::DOESNT_EXIST;
+          return NULL;
+        }
+      error_code = Protocol::OK;
+      return (this->__graphs.at(graph_name));
+    }
 
 	Vertex::Vertex*	get(Vertex::id const id, Protocol::error_code& error_code) const
 	  {
@@ -100,7 +102,8 @@ private:
 	    return this->__graphs.find(graph_name) != this->__graphs.end();
 	  }
 
-	Graph*				__current;
+  // FIXME: change to std::string, AGraph
+	Graph*				                __current;
 	std::map<std::string, Graph*>	__graphs;
 };
 

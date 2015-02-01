@@ -38,10 +38,11 @@ public:
       this->__execution["batch"]= &TextProtocol::__batch;
       this->__execution["dump"] = &TextProtocol::__dump;
 
+      // FIXME : extract key=value key=value key=value in map and give to final add_vertex
       this->__add_bind["vertex"]= &TextProtocol::__add_vertex;
       this->__add_bind["edge"] 	= &TextProtocol::__add_edge;
       this->__add_bind["graph"] = &TextProtocol::__add_graph;
-
+      
       this->__rm_bind["vertex"] = &TextProtocol::__rm_vertex;
       this->__rm_bind["edge"] 	= &TextProtocol::__rm_edge;
       this->__rm_bind["graph"] 	= &TextProtocol::__rm_graph;
@@ -57,17 +58,17 @@ public:
 
       boost::split(split_buffer ,command ,boost::is_any_of(" "));
       if (this->__check(split_buffer, COMMAND, error_code, NO_COMMAND))
-	{
-	  if (this->__exists(split_buffer[COMMAND], this->__execution))
-	    {
-	      if (this->__check(split_buffer, TYPE, error_code, NO_TYPE))
-		{
-		  function = this->__execution[split_buffer[COMMAND]];
-		  return (this->*function)(split_buffer);
-		}
-	    }
-	  return ("ERROR Command not found");
-	}
+      {
+        if (this->__exists(split_buffer[COMMAND], this->__execution))
+        {
+          if (this->__check(split_buffer, TYPE, error_code, NO_TYPE))
+          {
+            function = this->__execution[split_buffer[COMMAND]];
+            return (this->*function)(split_buffer);
+          }
+        }
+        return ("ERROR Command not found");
+      }
       return ("ERROR Empty Command");
     }
 
@@ -179,12 +180,12 @@ private:
     }
 
   std::string		__rm_graph(std::vector<std::string> const& args
-				  ,Protocol::error_code& error_code)
-    {
-      if (this->__check(args, NAME, error_code, NO_NAME) == true)
-	this->__core->remove(args[NAME], error_code);
-      return __answer(error_code, "RM");
-    }
+      ,Protocol::error_code& error_code)
+  {
+    if (this->__check(args, NAME, error_code, NO_NAME) == true)
+      this->__core->remove(args[NAME], error_code);
+    return __answer(error_code, "RM");
+  }
 
   std::string		__batch(std::vector<std::string> const& args)
     {
@@ -199,34 +200,34 @@ private:
       std::string	dump = "";
 
       if (this->__check(args, NAME, error_code, NO_NAME) == true)
-	{
-	  std::string dump =
-	    this->__core->dump(args[TYPE], args[NAME], error_code);
-	}
+      {
+        std::string dump =
+          this->__core->dump(args[TYPE], args[NAME], error_code);
+      }
       return __answer(error_code, "DUMP " + dump);
     }
 
   std::string		__check(std::vector<std::string> const& args\
-			       ,unsigned int to_check\
-			       ,std::string const& default_) const
-    {
-      if (args.size() - 1 < to_check)
-	return default_;
-      return args[to_check];
-    }
+      ,unsigned int to_check\
+      ,std::string const& default_) const
+  {
+    if (args.size() - 1 < to_check)
+      return default_;
+    return args[to_check];
+  }
 
   bool			__check(std::vector<std::string> const& args
-			       ,unsigned int to_check
-			       ,Protocol::error_code& error_code
-			       ,Protocol::error_code error) const
+      ,unsigned int to_check
+      ,Protocol::error_code& error_code
+      ,Protocol::error_code error) const
+  {
+    if (args.size() - 1 < to_check)
     {
-      if (args.size() - 1 < to_check)
-	{
-	  error_code = error;
-	  return false;
-	}
-      return true;
+      error_code = error;
+      return false;
     }
+    return true;
+  }
 
   template<typename target>
   bool			__exists(std::string const& name

@@ -11,32 +11,32 @@ public:
 
   Network(boost::asio::io_service& io_service, short port, AProtocol* protocol)
     : ANetwork(protocol),
-      __io_service(io_service),
-      __acceptor(io_service, tcp::endpoint(tcp::v4(), port))
+    __io_service(io_service),
+    __acceptor(io_service, tcp::endpoint(tcp::v4(), port))
   {
     NetworkSession* new_session = new NetworkSession(__io_service, this->__protocol);
     __acceptor.async_accept(new_session->socket(),
-			  boost::bind(&Network::accept, this, new_session,
-			  boost::asio::placeholders::error));
+        boost::bind(&Network::accept, this, new_session,
+          boost::asio::placeholders::error));
   }
 
   void accept(NetworkSession* new_session,
-	      const boost::system::error_code& error)
+      const boost::system::error_code& error)
+  {
+    if (!error)
     {
-      if (!error)
-	{
-	  std::cout << "Accept" << std::endl;
-	  new_session->start();
-	  new_session = new NetworkSession(__io_service, this->__protocol);
-	  __acceptor.async_accept(new_session->socket()
-				,boost::bind(&Network::accept
-				,this
-				,new_session
-				,boost::asio::placeholders::error));
-	}
-      else
-	delete new_session;
+      std::cout << "Accept" << std::endl;
+      new_session->start();
+      new_session = new NetworkSession(__io_service, this->__protocol);
+      __acceptor.async_accept(new_session->socket()
+          ,boost::bind(&Network::accept
+            ,this
+            ,new_session
+            ,boost::asio::placeholders::error));
     }
+    else
+      delete new_session;
+  }
 
 private:
   Network(const Network&);

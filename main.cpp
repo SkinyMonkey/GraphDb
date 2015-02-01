@@ -2,6 +2,7 @@
 #include <map>
 #include <utility>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/adjacency_matrix.hpp>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include "Vertex.hpp"
@@ -28,13 +29,14 @@ int	main(int argc, const char *argv[]) // FIXME : add options for conf
       int	port;
 
       if (argc != 2)
-	port = 5005;
+        port = 5005;
       else
-	port = std::atoi(argv[1]);
+        port = std::atoi(argv[1]);
 
       ISearchEngine*	s = new SearchEngine(); // FIXME : uncomplete
 
       boost::asio::io_service io_service;
+
       IGraphDB*		g = new GraphDB();
       AProtocol*	p = new TextProtocol();
       ANetwork*		n = new Network(io_service, port, p);

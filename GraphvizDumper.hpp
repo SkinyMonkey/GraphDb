@@ -15,8 +15,8 @@ public:
       std::ostringstream out;
 
       boost::write_graphviz(out, *graph,
-	  boost::make_label_writer(
-	    boost::get(&Vertex::Vertex::name, *graph)));
+	    boost::make_label_writer(
+           boost::get(&Vertex::Vertex::name, *graph)));
       return (out.str());
     }
 
