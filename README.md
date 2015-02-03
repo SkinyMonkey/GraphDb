@@ -24,11 +24,18 @@ TODO:
   - [x]  Create a vertex
   - [x]  Create an edge
   - [x]  Name a vertex
+    -> dynamic attributes?
+    -> one map per graph
+    -> one associative_property_map per graph
+
   - [ ]  Name an edge
+    -> dynamic attributes?
+    -> one map per graph
+    -> one associative_property_map per graph
 
   - [x]  Retrieve a graph
   - [x]  Retrieve a vertex
-  - [x]  Retrieve an edg
+  - [x]  Retrieve an edge
 
   - [ ]  Update a graph
   - [ ]  Update a vertex
@@ -39,6 +46,7 @@ TODO:
   - [x]  Delete an edge
   
   - [ ]  Defined attributes in vertex
+    -> dynamic attributes?
 
 - [x] Network
   - [x] receive a message
@@ -54,9 +62,15 @@ TODO:
     - [x] remove interpretation
     - [x] dump
 
+- [ ] Batchers
+  - [ ] manager
+  - [ ] graphviz
+  - [ ] graphml
+
 - [ ] Dumpers
   - [x] manager
   - [x] graphviz
+  - [ ] graphml ?
   - [ ] json
   - [ ] yaml
 
@@ -66,5 +80,10 @@ TODO:
     - [ ] check query
     - [ ] interpret the answer
 
+- [ ]  Visit a graph with a specified algorithm
+  - BFS -> Browser.hpp
+  - DFS
+
 - [ ]  Query a graph
-- [ ]  with a specified algorithm
+  - build query
+  - apply to visitor
