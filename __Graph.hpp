@@ -167,7 +167,9 @@ class RTTI
     RTTI()
       : type_name(typeid(G).name())
     {
-      std::cout << "typename : " << this->type_name << std::endl;
+#ifdef DEBUG
+      std::cout << this->type_name << std::endl;
+#endif
     }
 
     std::string                                     type_name;

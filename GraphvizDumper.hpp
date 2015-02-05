@@ -14,6 +14,9 @@ public:
     {
       std::ostringstream out;
 
+      // FIXME : Graph -> AGraph
+      // CAST_CALL(graph, boost::write_graphviz)
+
       boost::write_graphviz(out, *graph,
 	    boost::make_label_writer(
            boost::get(&Vertex::Vertex::name, *graph)));

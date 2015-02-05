@@ -24,6 +24,14 @@
 
 int	main(int argc, const char *argv[]) // FIXME : add options for conf
 {
+#ifdef DEBUG
+  if (argv[1] && std::string(argv[1]) == "--mangling")
+  {
+    init_graph_types();
+    return 0;
+  }
+#endif
+
   try
     {
       int	port;
