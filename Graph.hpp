@@ -12,6 +12,7 @@ typedef __Graph<boost::adjacency_list<boost::vecS
 	       ,Vertex::Vertex
 	      ,Edge::Edge> > Graph;
 
+
 std::map<std::string, AGraph*>  graph_types;
 
 void  init_graph_types(void)

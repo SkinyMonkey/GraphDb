@@ -4,6 +4,160 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
 
+namespace GraphTools
+{
+  template<typename G>
+    bool			exists(G& graph, Vertex::id const id)
+    {
+      for(auto vertices = boost::vertices(graph);
+          vertices.first != vertices.second;
+          ++vertices.first)
+      {
+        if ((*vertices.first) == id)
+          return true;
+      }
+      return false;
+    }
+
+  template<typename G>
+    bool      exists(G& graph, Vertex::id const src, Vertex::id const dst)
+    {
+      boost::edge(src, dst, graph).second;
+    }
+
+  template<typename G>
+    bool			exists(G& graph, Edge::id const& id)
+    {
+      return graph.edge_mapping.find(id) != graph.edge_mapping.end();
+    }
+
+  template<typename G, typename Target>
+    bool			exists_error(G& graph, Target id, Protocol::error_code& error_code)
+    {
+      if (exists(graph, id) == false)
+      {
+        error_code = Protocol::DOESNT_EXIST;
+        return (false);
+      }
+      error_code = Protocol::OK;
+      return (true);
+    }
+
+  template<typename G>
+    void      fill_attributes(G& graph, std::vector<std::string> const& args)
+    {
+      ;
+    }
+
+  template<typename G>
+    Vertex::id		add(G& graph,
+        std::string const& vertex_name,
+        std::vector<std::string> const& args)
+    {
+      typename G::vertex_descriptor id;
+
+      id = boost::add_vertex(graph);
+      graph[id].uid = id;
+
+      if (vertex_name != "")
+        graph[id].name = vertex_name;
+      else
+        graph[id].name = boost::lexical_cast<std::string>(id);
+
+      // FIXME : finish
+      // this->__fill_attributes(args, (*this)[id].attributes)
+
+      return id;
+    }
+
+  template<typename G>
+    Edge::id		add(G& graph,
+        Vertex::id const& from,
+        Vertex::id const& to,
+        std::string const& edge_name,
+        Protocol::error_code& error_code)
+    {
+      typename  G::edge_descriptor id;
+      bool		  res;
+      Edge::id 	edge_id(from, to, edge_name);
+
+      if (exists(graph, from) == false
+          || exists(graph, to) == false)
+      {
+        error_code = Protocol::DOESNT_EXIST;
+        return edge_id;
+      }
+
+      if (exists(graph, edge_id) == true)
+      { 
+        error_code = Protocol::ALREADY_EXIST;
+        return edge_id;
+      }
+
+      boost::tie(id, res) = boost::add_edge(from, to, graph);
+
+      if (res == false)
+      {
+        error_code = Protocol::CANT_ADD;
+        return edge_id;
+      }
+
+      graph[id].name = edge_name;
+      graph.edge_mapping[edge_id] = id;
+
+      error_code = Protocol::OK;
+      return edge_id;
+    }
+
+  template<typename G>
+    bool      remove(G& graph, Vertex::id const id, Protocol::error_code& error_code)
+    {
+      if (exists_error(graph, id, error_code) == false)
+        return false;
+      boost::remove_vertex(id, graph);
+      return true;
+    }
+
+  template<typename G>
+    bool			remove(G& graph, Edge::id const& id, Protocol::error_code& error_code)
+    {
+      if (exists_error(graph, id, error_code) == false)
+        return false;
+      boost::remove_edge(graph.edge_mapping[id], graph);
+      return true;
+    }
+
+  template<typename G>
+    Vertex::Vertex*	get(G& graph, Vertex::id const id, Protocol::error_code& error_code)
+    {
+      if (exists_error(graph, id, error_code) == false)
+        return NULL;
+      return (&graph[id]);
+    }
+
+  template<typename G>
+    Edge::Edge*		get(G& graph, Edge::id const& id, Protocol::error_code& error_code)
+    {
+      if (exists_error(graph, id, error_code) == false)
+        return NULL;
+      return (&graph[graph.edge_mapping[id]]);
+    }
+
+  template<typename G>
+    unsigned long vertex_count(G& graph)
+    {
+      num_vertices(graph);
+    }
+
+  template<typename G>
+    unsigned long edges_count(G& graph)
+    {
+      num_edges(graph);
+    }
+}
+
+// -------------------------------------------------------------------------------
+
 class AGraph
 {
 };
@@ -16,143 +170,7 @@ class __Graph : public AGraph, public G
     {
     }
 
-    Vertex::id		add(std::string const& vertex_name,
-                      std::vector<std::string> const& args)
-    {
-      typename G::vertex_descriptor id;
-
-      id = boost::add_vertex(*this);
-      (*this)[id].uid = id;
-
-      if (vertex_name != "")
-        (*this)[id].name = vertex_name;
-      else
-        (*this)[id].name = boost::lexical_cast<std::string>(id);
-
-      // FIXME : finish
-      // this->__fill_attributes(args, (*this)[id].attributes)
-      
-      return id;
-    }
-
-    Edge::id		add(Vertex::id const& from,
-                    Vertex::id const& to,
-                    std::string const& edge_name,
-                    Protocol::error_code& error_code)
-    {
-      typename  G::edge_descriptor id;
-      bool		  res;
-      Edge::id 	edge_id(from, to, edge_name);
-
-      if (this->__exists(from) == false
-          || this->__exists(to) == false)
-      {
-        error_code = Protocol::DOESNT_EXIST;
-        return edge_id;
-      }
-
-      if (this->__exists(edge_id) == true)
-      { 
-        error_code = Protocol::ALREADY_EXIST;
-        return edge_id;
-      }
-
-      boost::tie(id, res) = boost::add_edge(from, to, *this);
-
-      if (res == false)
-      {
-        error_code = Protocol::CANT_ADD;
-        return edge_id;
-      }
-
-      // FIXME : create, fill, add
-      (*this)[id].name = edge_name;
-      error_code = Protocol::OK;
-      this->__edge_mapping[edge_id] = id;
-      return edge_id;
-    }
-
-    bool      remove(Vertex::id const id, Protocol::error_code& error_code)
-    {
-      if (this->__exists_error(id, error_code) == false)
-        return false;
-      boost::remove_vertex(id, *this);
-      return true;
-    }
-
-    bool			remove(Edge::id const& id, Protocol::error_code& error_code)
-    {
-      if (this->__exists_error(id, error_code) == false)
-        return false;
-      boost::remove_edge(this->__edge_mapping[id], *this);
-      return true;
-    }
-
-    Vertex::Vertex*	get(Vertex::id const id, Protocol::error_code& error_code)
-    {
-      if (this->__exists_error(id, error_code) == false)
-        return NULL;
-      return (&(*this)[id]);
-    }
-
-    Edge::Edge*		get(Edge::id const& id, Protocol::error_code& error_code)
-    {
-      if (this->__exists_error(id, error_code) == false)
-        return NULL;
-      return (&(*this)[this->__edge_mapping[id]]);
-    }
-
-    unsigned long vertex_count() const
-    {
-      num_vertices(*this);
-    }
-
-    unsigned long edges_count() const
-    {
-      num_edges(*this);
-    }
-
-  private:
-    template<typename Target>
-      bool			__exists_error(Target id, Protocol::error_code& error_code) const
-      {
-        if (this->__exists(id) == false)
-        {
-          error_code = Protocol::DOESNT_EXIST;
-          return (false);
-        }
-        error_code = Protocol::OK;
-        return (true);
-      }
-
-    bool			__exists(Vertex::id const id) const
-    {
-      for(auto vertices = boost::vertices(*this);
-          vertices.first != vertices.second;
-          ++vertices.first)
-      {
-        if ((*vertices.first) == id)
-          return true;
-      }
-      return false;
-    }
-
-    bool      __exists(Vertex::id const src, Vertex::id const dst) const
-    {
-      boost::edge(src, dst, *this).second;
-    }
-
-    bool			__exists(Edge::id const& id) const
-    {
-      return this->__edge_mapping.find(id) != this->__edge_mapping.end();
-    }
-
-    void      __fill_attributes(std::vector<std::string> const& args) const
-    {
-      ;
-    }
-
-    std::map<Edge::id, typename G::edge_descriptor>	__edge_mapping;
+  std::map<Edge::id, typename G::edge_descriptor>	edge_mapping;
 };
 
 #endif /* ____GRAPH__ */
