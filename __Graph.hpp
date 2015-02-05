@@ -4,6 +4,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
 
+#include <iostream>
+
 namespace GraphTools
 {
   template<typename G>
@@ -158,12 +160,26 @@ namespace GraphTools
 
 // -------------------------------------------------------------------------------
 
+template<typename G>
+class RTTI
+{
+  public:
+    RTTI()
+      : type_name(typeid(G).name())
+    {
+      std::cout << "typename : " << this->type_name << std::endl;
+    }
+
+    std::string                                     type_name;
+};
+
 class AGraph
 {
+  ;
 };
 
 template<typename G>
-class __Graph : public AGraph, public G
+class __Graph : public AGraph, public RTTI<G>, public G
 {
   public:
     __Graph()

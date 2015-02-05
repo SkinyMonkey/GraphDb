@@ -15,6 +15,13 @@ typedef __Graph<boost::adjacency_list<boost::vecS
 
 std::map<std::string, AGraph*>  graph_types;
 
+// FIXME : one map for typeindex : instance
+//       : one map for name : instance
+//       we want to determine cast from instance -> typeindex
+//
+//       generate/template functions to return type from type_name/hash(type_name)
+//       switch name/cast ...
+
 void  init_graph_types(void)
 {
 // The following python code generates each specialisation possibility
