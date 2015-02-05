@@ -12,12 +12,6 @@ template<typename G>
 class __Graph : public AGraph, public G
 {
   public:
-    typedef typename boost::graph_traits<G>::vertex_iterator vertex_iterator;
-    typedef typename boost::graph_traits<G>::edge_iterator edge_iterator;
-
-    // FIXME : use vertices and edges instead of vertex and edge mappings
-    // FIXME : use num_edges, num_vertices
-
     __Graph()
     {
     }
