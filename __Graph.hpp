@@ -2,6 +2,7 @@
 #define ____GRAPH__
 
 #include <boost/lexical_cast.hpp>
+#include <boost/foreach.hpp>
 
 class AGraph
 {
@@ -11,27 +12,39 @@ template<typename G>
 class __Graph : public AGraph, public G
 {
   public:
-    typedef typename G::adjacency_iterator	adjacency_iterator;
+    typedef typename boost::graph_traits<G>::vertex_iterator vertex_iterator;
+    typedef typename boost::graph_traits<G>::edge_iterator edge_iterator;
+
+    // FIXME : use vertices and edges instead of vertex and edge mappings
+    // FIXME : use num_edges, num_vertices
 
     __Graph()
-      : G(), __vertex_count(0)
     {
     }
 
-    Vertex::id		add(std::string const& vertex_name, std::vector<std::string> const& args)
+    Vertex::id		add(std::string const& vertex_name,
+                      std::vector<std::string> const& args)
     {
-      // FIXME : create, fill, add
-      this->__vertex_mapping[++this->__vertex_count] = boost::add_vertex(*this);
-      (*this)[this->__vertex_mapping[this->__vertex_count]].uid = this->__vertex_count;
+      typename G::vertex_descriptor id;
+
+      id = boost::add_vertex(*this);
+      (*this)[id].uid = id;
+
       if (vertex_name != "")
-        (*this)[this->__vertex_mapping[this->__vertex_count]].name = vertex_name;
+        (*this)[id].name = vertex_name;
       else
-        (*this)[this->__vertex_mapping[this->__vertex_count]].name =\
-                                                                    boost::lexical_cast<std::string>(this->__vertex_count);
-      return this->__vertex_count;
+        (*this)[id].name = boost::lexical_cast<std::string>(id);
+
+      // FIXME : finish
+      // this->__fill_attributes(args, (*this)[id].attributes)
+      
+      return id;
     }
 
-    Edge::id		add(Vertex::id const& from, Vertex::id const& to, std::string const& edge_name, Protocol::error_code& error_code)
+    Edge::id		add(Vertex::id const& from,
+                    Vertex::id const& to,
+                    std::string const& edge_name,
+                    Protocol::error_code& error_code)
     {
       typename  G::edge_descriptor id;
       bool		  res;
@@ -43,20 +56,21 @@ class __Graph : public AGraph, public G
         error_code = Protocol::DOESNT_EXIST;
         return edge_id;
       }
+
       if (this->__exists(edge_id) == true)
       { 
         error_code = Protocol::ALREADY_EXIST;
         return edge_id;
       }
 
-      boost::tie(id, res) = boost::add_edge(\
-          this->__vertex_mapping[from],
-          this->__vertex_mapping[to], *this);
+      boost::tie(id, res) = boost::add_edge(from, to, *this);
+
       if (res == false)
       {
         error_code = Protocol::CANT_ADD;
         return edge_id;
       }
+
       // FIXME : create, fill, add
       (*this)[id].name = edge_name;
       error_code = Protocol::OK;
@@ -64,26 +78,27 @@ class __Graph : public AGraph, public G
       return edge_id;
     }
 
-    void			remove(Vertex::id const id, Protocol::error_code& error_code)
+    bool      remove(Vertex::id const id, Protocol::error_code& error_code)
     {
       if (this->__exists_error(id, error_code) == false)
-        return;
-      boost::remove_vertex(this->__vertex_mapping[id], *this);
-      this->__vertex_mapping.erase(id);
+        return false;
+      boost::remove_vertex(id, *this);
+      return true;
     }
 
-    void			remove(Edge::id const& id, Protocol::error_code& error_code)
+    bool			remove(Edge::id const& id, Protocol::error_code& error_code)
     {
       if (this->__exists_error(id, error_code) == false)
-        return;
+        return false;
       boost::remove_edge(this->__edge_mapping[id], *this);
+      return true;
     }
 
     Vertex::Vertex*	get(Vertex::id const id, Protocol::error_code& error_code)
     {
       if (this->__exists_error(id, error_code) == false)
         return NULL;
-      return (&(*this)[this->__vertex_mapping[id]]);
+      return (&(*this)[id]);
     }
 
     Edge::Edge*		get(Edge::id const& id, Protocol::error_code& error_code)
@@ -91,6 +106,16 @@ class __Graph : public AGraph, public G
       if (this->__exists_error(id, error_code) == false)
         return NULL;
       return (&(*this)[this->__edge_mapping[id]]);
+    }
+
+    unsigned long vertex_count() const
+    {
+      num_vertices(*this);
+    }
+
+    unsigned long edges_count() const
+    {
+      num_edges(*this);
     }
 
   private:
@@ -108,7 +133,19 @@ class __Graph : public AGraph, public G
 
     bool			__exists(Vertex::id const id) const
     {
-      return this->__vertex_mapping.find(id) != this->__vertex_mapping.end();
+      for(auto vertices = boost::vertices(*this);
+          vertices.first != vertices.second;
+          ++vertices.first)
+      {
+        if ((*vertices.first) == id)
+          return true;
+      }
+      return false;
+    }
+
+    bool      __exists(Vertex::id const src, Vertex::id const dst) const
+    {
+      boost::edge(src, dst, *this).second;
     }
 
     bool			__exists(Edge::id const& id) const
@@ -116,14 +153,11 @@ class __Graph : public AGraph, public G
       return this->__edge_mapping.find(id) != this->__edge_mapping.end();
     }
 
-    bool			__exists(std::string const& name) const
+    void      __fill_attributes(std::vector<std::string> const& args) const
     {
-      return this->__dumpers.find(name) != this->__dumpers.end();
+      ;
     }
 
-    Vertex::id						__vertex_count;
-    // FIXME : change Data structure?
-    std::map<Vertex::id, typename G::vertex_descriptor>	__vertex_mapping;
     std::map<Edge::id, typename G::edge_descriptor>	__edge_mapping;
 };
 

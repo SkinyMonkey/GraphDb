@@ -33,6 +33,10 @@ TODO:
     -> one map per graph
     -> one associative_property_map per graph
 
+  - [ ] Add qualifiers in args
+    -> unique
+    -> ...
+
   - [x]  Retrieve a graph
   - [x]  Retrieve a vertex
   - [x]  Retrieve an edge
