@@ -37,7 +37,8 @@ class GraphDB : public IGraphDB
         return;
       }
       error_code = Protocol::OK;
-      this->__graphs[graph_name] = new Graph();
+      // FIXME : fixed type
+      this->__graphs[graph_name] = graph_types["adjacency_list_vecS_vecS_undirectedS"];
     }
 
     Edge::id	add(Vertex::id const from,
@@ -77,7 +78,7 @@ class GraphDB : public IGraphDB
       GraphTools::remove(*this->__current, id, error_code);
     }
 
-    Graph*		get(std::string const& graph_name,
+    AGraph*		get(std::string const& graph_name,
                   Protocol::error_code& error_code) const
     {
       if (this->__exists(graph_name) == false)
@@ -109,9 +110,8 @@ class GraphDB : public IGraphDB
       return this->__graphs.find(graph_name) != this->__graphs.end();
     }
 
-    // FIXME: change to std::string, AGraph
-    Graph*				                __current;
-    std::map<std::string, Graph*>	__graphs;
+    AGraph*				                __current;
+    std::map<std::string, AGraph*>	__graphs;
 };
 
 #endif /* __GRAPHDB__ */

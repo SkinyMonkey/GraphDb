@@ -18,7 +18,7 @@ public:
   virtual void		remove(Vertex::id const, Protocol::error_code&) = 0;
   virtual void		remove(Edge::id const&, Protocol::error_code&) = 0;
 
-  virtual Graph*		get(std::string const&, Protocol::error_code&) const = 0;
+  virtual AGraph*		get(std::string const&, Protocol::error_code&) const = 0;
   virtual Vertex::Vertex*	get(Vertex::id const, Protocol::error_code&) const = 0;
   virtual Edge::Edge*		get(Edge::id const&, Protocol::error_code&) const = 0;
 

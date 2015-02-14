@@ -165,19 +165,21 @@ class RTTI
 {
   public:
     RTTI()
-      : type_name(typeid(G).name())
+      : __type_name(typeid(G).name())
     {
 #ifdef DEBUG
-      std::cout << this->type_name << std::endl;
+      std::cout << this->__type_name << std::endl;
 #endif
     }
 
-    std::string                                     type_name;
+  protected:
+    std::string     __type_name;
 };
 
 class AGraph
 {
-  ;
+  public:
+    virtual std::string type_name() const = 0;
 };
 
 template<typename G>
@@ -189,6 +191,11 @@ class __Graph : public AGraph, public RTTI<G>, public G
     }
 
   std::map<Edge::id, typename G::edge_descriptor>	edge_mapping;
+  
+  std::string     type_name() const
+    {
+      return this->__type_name;
+    }
 };
 
 #endif /* ____GRAPH__ */

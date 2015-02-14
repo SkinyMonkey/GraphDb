@@ -80,7 +80,7 @@ cog.outl("""};""")
 
 cog.outl("""
 #define CAST_CALL(graph)\\
-  auto index_it = std::find(graph_types.begin(), graph_types.end(), graph.type_name);\\
+  auto index_it = std::find(graph_types.begin(), graph_types.end(), graph->type_name());\\
   int index = index_it - graph_types.begin();\\
   switch (index)\\
   {\\""")
@@ -93,7 +93,7 @@ for combination in combinations:
                                    ,boost::{}\\
                                    ,boost::{}\\
                                    ,Vertex::Vertex\\
-                                   ,Edge::Edge> >* >(graph);\\
+                                   ,Edge::Edge> > const* >(graph);\\
             break;\\
       }}\\""".format(index, combination[0], combination[1], combination[2], combination[3]))
   index += 1
@@ -203,7 +203,7 @@ std::vector<std::string> graph_types = {
 };
 
 #define CAST_CALL(graph)\
-  auto index_it = std::find(graph_types.begin(), graph_types.end(), graph.type_name);\
+  auto index_it = std::find(graph_types.begin(), graph_types.end(), graph->type_name());\
   int index = index_it - graph_types.begin();\
   switch (index)\
   {\
@@ -213,7 +213,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::vecS\
                                    ,boost::undirectedS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 1: \
@@ -222,7 +222,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::listS\
                                    ,boost::undirectedS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 2: \
@@ -231,7 +231,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::vecS\
                                    ,boost::undirectedS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 3: \
@@ -240,7 +240,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::listS\
                                    ,boost::undirectedS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 4: \
@@ -249,7 +249,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::vecS\
                                    ,boost::directedS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 5: \
@@ -258,7 +258,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::listS\
                                    ,boost::directedS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 6: \
@@ -267,7 +267,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::vecS\
                                    ,boost::directedS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 7: \
@@ -276,7 +276,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::listS\
                                    ,boost::directedS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 8: \
@@ -285,7 +285,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::vecS\
                                    ,boost::bidirectionalS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 9: \
@@ -294,7 +294,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::listS\
                                    ,boost::bidirectionalS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 10: \
@@ -303,7 +303,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::vecS\
                                    ,boost::bidirectionalS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
           case 11: \
@@ -312,7 +312,7 @@ std::vector<std::string> graph_types = {
                                    ,boost::listS\
                                    ,boost::bidirectionalS\
                                    ,Vertex::Vertex\
-                                   ,Edge::Edge> >* >(graph);\
+                                   ,Edge::Edge> > const* >(graph);\
             break;\
       }\
         default:\

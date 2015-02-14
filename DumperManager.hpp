@@ -23,7 +23,7 @@ public:
 	}
       error_code = Protocol::OK;
 
-      Graph*	current = this->__graphdb->get(graph_name, error_code);
+      AGraph*	current = this->__graphdb->get(graph_name, error_code);
       if (error_code != Protocol::OK)
 	return std::string("");
       return (*this->__dumpers.at(dumper_name))(current, error_code);

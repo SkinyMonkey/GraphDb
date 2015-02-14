@@ -10,16 +10,16 @@ public:
     {}
   ~GraphvizDumper() {}
 
-  std::string	operator()(Graph const* graph, Protocol::error_code& error_code) const
+  std::string	operator()(AGraph const* graph, Protocol::error_code& error_code) const
     {
       std::ostringstream out;
 
-      // FIXME : Graph -> AGraph
-      // CAST_CALL(graph, boost::write_graphviz)
+      // FIXME
+      CAST_CALL(graph)
 
-      boost::write_graphviz(out, *graph,
+      boost::write_graphviz(out, real_typed_graph,
 	    boost::make_label_writer(
-           boost::get(&Vertex::Vertex::name, *graph)));
+           boost::get(&Vertex::Vertex::name, real_typed_graph)));
       return (out.str());
     }
 
