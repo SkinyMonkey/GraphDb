@@ -15,7 +15,6 @@ public:
       , __protocol(p)
       , __graphdb(g)
       , __search_engine(s)
-      , __dumper_manager(g)
   {
     p->set_network(n);
     p->set_core(this);
@@ -61,9 +60,9 @@ public:
       this->__graphdb->remove(id, code);
     }
 
-  std::string	dump(std::string const& graph_name, std::string const& dumper_name, Protocol::error_code& error_code) const
+  std::string	dump(std::string const& dumper_name, Protocol::error_code& error_code) const
     {
-      return this->__dumper_manager(graph_name, dumper_name, error_code);
+      return this->__graphdb->dump(dumper_name, error_code);
     }
 
 // FIXME : update/read methods, need search engine
@@ -72,10 +71,9 @@ private:
   Core& operator=(const Core&);
 
   Configuration				__configuration;
-  AProtocol*				__protocol;
-  IGraphDB*				__graphdb;
+  AProtocol*				  __protocol;
+  IGraphDB*				    __graphdb;
   ISearchEngine*			__search_engine;
-  DumperManager				__dumper_manager;
 };
 
 #endif /* __CORE__ */

@@ -22,6 +22,8 @@ public:
   virtual Vertex::Vertex*	get(Vertex::id const, Protocol::error_code&) const = 0;
   virtual Edge::Edge*		get(Edge::id const&, Protocol::error_code&) const = 0;
 
+  virtual std::string   dump(std::string const&, Protocol::error_code&) const = 0;
+
 protected:
   IGraphDB(const IGraphDB&);
   IGraphDB& operator=(const IGraphDB&);

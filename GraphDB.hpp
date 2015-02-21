@@ -46,14 +46,14 @@ class GraphDB : public IGraphDB
                   std::string const& name,
                   Protocol::error_code& error_code)
     {
-      return GraphTools::add(*this->__current, from, to, name, error_code);
+      return this->__current->add(from, to, name, error_code);
     }
 
     // FIXME : set vertex attributes
     Vertex::id	add(std::string const& vertex_name,
                     std::vector<std::string> const& args)
     {
-      return GraphTools::add(*this->__current, vertex_name, args);
+      return this->__current->add(vertex_name, args);
     }
 
     void		remove(std::string const& graph_name,
@@ -70,12 +70,12 @@ class GraphDB : public IGraphDB
 
     void		remove(Vertex::id const id, Protocol::error_code& error_code)
     {
-      GraphTools::remove(*this->__current, id, error_code);
+      this->__current->remove(id, error_code);
     }
 
     void		remove(Edge::id const& id, Protocol::error_code& error_code)
     {
-      GraphTools::remove(*this->__current, id, error_code);
+      this->__current->remove(id, error_code);
     }
 
     AGraph*		get(std::string const& graph_name,
@@ -93,12 +93,17 @@ class GraphDB : public IGraphDB
     Vertex::Vertex*	get(Vertex::id const id,
                         Protocol::error_code& error_code) const
     {
-      return GraphTools::get(*this->__current, id, error_code);
+      return this->__current->get(id, error_code);
     }
 
     Edge::Edge*	get(Edge::id const& id, Protocol::error_code& error_code) const
     {
-      return GraphTools::get(*this->__current, id, error_code);
+      return this->__current->get(id, error_code);
+    }
+  
+    std::string   dump(std::string const& dumper_name, Protocol::error_code& error_code) const
+    {
+      return this->__current->dump(dumper_name, error_code);
     }
 
   private:
@@ -110,7 +115,7 @@ class GraphDB : public IGraphDB
       return this->__graphs.find(graph_name) != this->__graphs.end();
     }
 
-    AGraph*				                __current;
+    AGraph*				                  __current;
     std::map<std::string, AGraph*>	__graphs;
 };
 

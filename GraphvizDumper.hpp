@@ -3,6 +3,7 @@
 
 #include <boost/graph/graphviz.hpp>
 
+template<typename G>
 class GraphvizDumper : public ADumper
 {
 public:
@@ -10,16 +11,14 @@ public:
     {}
   ~GraphvizDumper() {}
 
-  std::string	operator()(AGraph const* graph, Protocol::error_code& error_code) const
+  std::string	dump(AGraph const* graph, Protocol::error_code& error_code) const
     {
       std::ostringstream out;
+      G const*                 graph_ptr = static_cast<G const*>(graph);
 
-      // FIXME
-      CAST_CALL(graph)
-
-      boost::write_graphviz(out, real_typed_graph,
-	    boost::make_label_writer(
-           boost::get(&Vertex::Vertex::name, real_typed_graph)));
+      boost::write_graphviz(out, *graph_ptr,
+	      boost::make_label_writer(
+          boost::get(&Vertex::Vertex::name, *graph_ptr)));
       return (out.str());
     }
 
