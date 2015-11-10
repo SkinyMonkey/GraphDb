@@ -8,7 +8,6 @@ namespace			                            Vertex
     {
       id			                            uid;
       std::string		                      name;
-      std::map<std::string, std::string>  attributes;
     }				                              Vertex;
 }
 

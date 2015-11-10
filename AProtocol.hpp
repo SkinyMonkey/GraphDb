@@ -16,6 +16,7 @@ namespace		Protocol
       NO_NAME,
       NO_FROM,
       NO_TO,
+      NO_VALUE,
       NO_TYPE,
       NO_COMMAND,
       ERROR_CODE_SIZE

@@ -11,7 +11,7 @@ public:
 
   virtual void		add(std::string const&, Protocol::error_code&) = 0;
   // FIXME : alloc exception -> error_code&?
-  virtual Vertex::id	add(std::string const&, std::vector<std::string> const&) = 0;
+  virtual Vertex::id	add(std::string const&, std::map<std::string, std::string> const&) = 0;
   virtual Edge::id	add(Vertex::id const, Vertex::id const, std::string const&, Protocol::error_code&) = 0;
 
   virtual void		remove(std::string const&, Protocol::error_code&) = 0;

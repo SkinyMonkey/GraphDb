@@ -9,9 +9,9 @@ namespace							Edge
   typedef boost::tuple<Vertex::id, Vertex::id, std::string>	id;
   typedef struct 						edge
     {
-      id							uid;
+      id							      uid;
       std::string						name;
-    }								Edge;
+    }								        Edge;
 }
 
 #endif /* __EDGE__ */

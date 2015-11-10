@@ -2,6 +2,7 @@
 #define __TEXTPROTOCOL__
 
 #include <boost/algorithm/string.hpp>
+#include <boost/range/adaptor/sliced.hpp>
 
 class TextProtocol : public AProtocol
 {
@@ -19,8 +20,10 @@ class TextProtocol : public AProtocol
   enum	placeholders
   {
     COMMAND,
+    KEY = COMMAND,
     TYPE,
     USE_NAME = TYPE,
+    VALUE = TYPE,
     NAME,
     FROM = NAME,
     TO
@@ -117,9 +120,12 @@ class TextProtocol : public AProtocol
   std::string		__add_vertex(std::vector<std::string> const& args
       ,Protocol::error_code& error_code)
   {
-    Vertex::id id =
-      this->__core->add(this->__check(args, NAME, ""), args);
+    std::map<std::string, std::string>  attributes;
 
+    // FIXME : change, return false with error_code in case of malformed
+    __parse_attributes(attributes, args, NAME);
+    Vertex::id id =
+      this->__core->add(this->__check(args, NAME, ""), attributes);
 
     error_code = OK;
     return __answer(error_code
@@ -133,6 +139,9 @@ class TextProtocol : public AProtocol
     if (this->__check(args, FROM, error_code, NO_FROM) == true\
         && this->__check(args, TO, error_code, NO_TO) == true)
     {
+      // FIXME : add edge attributes
+      // std::map<std::string, std::string>  attributes;
+
       Vertex::id from = std::atol(args[FROM].c_str());
       Vertex::id to = std::atol(args[TO].c_str());
       Edge::id   id = this->__core->add(from, to, "", error_code);
@@ -159,6 +168,7 @@ class TextProtocol : public AProtocol
     return this->__call_sub(args, this->__rm_bind);
   }
 
+  // FIXME : improve feedback with right vertex remove
   std::string		__rm_vertex(std::vector<std::string> const& args
       ,Protocol::error_code& error_code)
   {
@@ -226,6 +236,26 @@ class TextProtocol : public AProtocol
     return true;
   }
 
+  void      __parse_attributes(std::map<std::string, std::string> &attributes,
+                               std::vector<std::string> const& args,
+                               unsigned int offset)
+  {
+    std::vector<std::string>	split_buffer;
+    error_code		error_code;
+
+    if (args.size() <= offset) return;
+
+    for (auto arg : args | boost::adaptors::sliced(offset + 1, args.size()))
+    {
+      boost::split(split_buffer ,arg ,boost::is_any_of("="));
+      if (this->__check(split_buffer, VALUE, error_code, NO_VALUE))
+      {
+        attributes[split_buffer[0]] = split_buffer[1];
+        error_code = OK;
+      }
+    }
+  }
+
   template<typename target>
     bool			__exists(std::string const& name
         ,target const& table) const
@@ -238,6 +268,7 @@ class TextProtocol : public AProtocol
   sub_execution_table		__rm_bind;
 };
 
+// FIXME : move to protocol?
 std::string const	TextProtocol::errors[Protocol::ERROR_CODE_SIZE] =
 {
   " OK"
@@ -248,6 +279,7 @@ std::string const	TextProtocol::errors[Protocol::ERROR_CODE_SIZE] =
     ," NO NAME"
     ," NO FROM"
     ," NO TO"
+    ," NO VALUE"
 };
 
 #endif /* __TEXTPROTOCOL__ */

@@ -49,9 +49,8 @@ class GraphDB : public IGraphDB
       return this->__current->add(from, to, name, error_code);
     }
 
-    // FIXME : set vertex attributes
     Vertex::id	add(std::string const& vertex_name,
-                    std::vector<std::string> const& args)
+                    std::map<std::string, std::string> const& args)
     {
       return this->__current->add(vertex_name, args);
     }

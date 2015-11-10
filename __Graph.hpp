@@ -46,18 +46,15 @@ class __Graph: public G
       return (true);
     }
 
-    void      fill_attributes(Vertex::id& id, std::vector<std::string> const& args)
+    template<typename Map>
+    void      __update_map(Map const& src, Map& dst)
     {
-      ;
-    }
-    
-    void      fill_attributes(Edge::id& id, std::vector<std::string> const& args)
-    {
-      ;
+      for (auto e : src)
+        dst[e.first] = e.second;
     }
 
     Vertex::id		add(std::string const& vertex_name,
-                      std::vector<std::string> const& args)
+                      std::map<std::string, std::string> const& args)
     {
       typename G::vertex_descriptor id;
 
@@ -70,8 +67,7 @@ class __Graph: public G
       else
         (*this)[id].name = boost::lexical_cast<std::string>(id);
 
-      this->__fill_attributes(args, id);
-
+      this->vertex_attributes[id] = args;
       return id;
     }
 
@@ -116,6 +112,7 @@ class __Graph: public G
     {
       if (__exists_error(id, error_code) == false)
         return false;
+      // FIXME : clear_vertex?
       boost::remove_vertex(id, *this);
       return true;
     }
@@ -152,12 +149,11 @@ class __Graph: public G
       return num_edges(*this);
     }
 
-  protected:
     typedef std::map<std::string, std::string>  attributes;
 
-    std::map<Vertex::id, attributes>   __vertex_properties;
-    std::map<Edge::id, attributes>     __edge_properties;
-
+    std::map<Vertex::id, attributes>   vertex_attributes;
+    std::map<Edge::id, attributes>   edge_attributes;
+    attributes                graph_properties;
 
   private:
     std::map<Edge::id, typename G::edge_descriptor>	__edge_mapping;
@@ -191,7 +187,7 @@ class AGraph
                                Vertex::id const&) const {return false;}
 
     virtual Vertex::id  add(std::string const&,
-                            std::vector<std::string> const&) {return 0;}
+                            std::map<std::string, std::string> const&) {return 0;}
     virtual Edge::id		add(Vertex::id const&,
                             Vertex::id const&,
                             std::string const&,
@@ -224,8 +220,9 @@ class Graph : public __Graph<G>, public RTTI<G>, public AGraph
     }
     
   inline Vertex::id  add(std::string const& vertex_name,
-                  std::vector<std::string> const& args)
+                  std::map<std::string, std::string> const& args)
   {
+    // FIXME : remove time 
     Vertex::id  res;
     const clock_t begin_time = clock();
 

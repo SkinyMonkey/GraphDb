@@ -40,7 +40,7 @@ public:
       return this->__graphdb->add(from, to, name, code);
     }
 
-  Vertex::id	add(std::string const& vertex_name, std::vector<std::string> const& args)
+  Vertex::id	add(std::string const& vertex_name, std::map<std::string, std::string> const& args)
     {
       return this->__graphdb->add(vertex_name, args);
     }
