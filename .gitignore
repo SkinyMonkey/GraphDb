@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+
+*.swp
+*.swo
+*.bak
+*.tmp
+tmp/*
