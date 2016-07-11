@@ -41,8 +41,6 @@ int	main(int argc, const char *argv[]) // FIXME : add options for conf
 
       Core const* c = Configuration("default.conf")(argc, argv, io_service);
 
-      std::cout << "Launching server on port " << port << std::endl;
-
       io_service.run();
     }
   catch (std::exception& e)

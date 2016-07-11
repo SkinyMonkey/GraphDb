@@ -152,8 +152,8 @@ class __Graph: public G
     typedef std::map<std::string, std::string>  attributes;
 
     std::map<Vertex::id, attributes>   vertex_attributes;
-    std::map<Edge::id, attributes>   edge_attributes;
-    attributes                graph_properties;
+    std::map<Edge::id, attributes>     edge_attributes;
+    attributes                         graph_properties;
 
   private:
     std::map<Edge::id, typename G::edge_descriptor>	__edge_mapping;

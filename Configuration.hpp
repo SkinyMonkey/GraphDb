@@ -26,6 +26,8 @@ public:
       IGraphDB*		     graphdb = new GraphDB();
       IPersistence*    persistence = new MysqlPersistence("default");
 
+      std::cout << "Launching server on port " << port << std::endl;
+
       return new Core(network,
                       graphdb,
                       search_engine,
