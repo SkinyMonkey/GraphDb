@@ -124,6 +124,7 @@ class TextProtocol : public AProtocol
 
     // FIXME : change, return false with error_code in case of malformed
     __parse_attributes(attributes, args, NAME);
+
     Vertex::id id =
       this->__core->add(this->__check(args, NAME, ""), attributes);
 

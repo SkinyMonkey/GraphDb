@@ -179,6 +179,7 @@ class RTTI
 
 class AGraph
 {
+  // FIXME : why not pure functions?
   // FIXME : log an error message if used.
   public:
     virtual std::string type_name() const {return "";}
@@ -201,6 +202,8 @@ class AGraph
     virtual Vertex::Vertex*	get(Vertex::id const,
                                 Protocol::error_code&) {return NULL;}
     virtual Edge::Edge* get(Edge::id const&, Protocol::error_code&) {return NULL;}
+
+    // FIXME : update?
 
     virtual unsigned long vertex_count(void) const {return 0;}
     virtual unsigned long edges_count(void) const {return 0;}

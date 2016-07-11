@@ -9,19 +9,21 @@
 #include "Edge.hpp"
 #include "AProtocol.hpp"
 #include "ISearchEngine.hpp"
-#include "Configuration.hpp"
 #include "Manager.hpp"
 #include "ADumper.hpp"
 #include "GraphvizDumper.hpp"
 #include "Graph.hpp"
 #include "IGraphDB.hpp"
 #include "GraphDB.hpp"
+#include "IPersistence.hpp"
+#include "Mysql.hpp"
 #include "Core.hpp"
 #include "SearchEngine.hpp"
 #include "TextProtocol.hpp"
 #include "ANetwork.hpp"
 #include "NetworkSession.hpp"
 #include "Network.hpp"
+#include "Configuration.hpp"
 
 int	main(int argc, const char *argv[]) // FIXME : add options for conf
 {
@@ -35,36 +37,12 @@ int	main(int argc, const char *argv[]) // FIXME : add options for conf
 
   try
     {
-      int	port;
-
-      if (argc != 2)
-        port = 5005;
-      else
-        port = std::atoi(argv[1]);
-
-      ISearchEngine*	s = new SearchEngine(); // FIXME : uncomplete
-
       boost::asio::io_service io_service;
 
-      IGraphDB*		g = new GraphDB();
-      AProtocol*	p = new TextProtocol();
-      ANetwork*		n = new Network(io_service, port, p);
-      Core		c(n, g, s, p);
-
-      /*
-      // FIXME : Test adjacent vertices
-      // graph -> "default"
-      Vertex::id v = g->add();
-      error_code	error_code;
-
-      adjacency_iterator	begin;
-      adjacency_iterator	end;
-
-      boost::tie(begin, end) = adjacent_vertices(v, *g->get("default", &error_code));
-      // ENDFIXME
-      */
+      Core const* c = Configuration("default.conf")(argc, argv, io_service);
 
       std::cout << "Launching server on port " << port << std::endl;
+
       io_service.run();
     }
   catch (std::exception& e)

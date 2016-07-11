@@ -1,6 +1,7 @@
 #ifndef __GRAPHDB__
 #define __GRAPHDB__
 
+// FIXME : could be a manager itself
 class GraphDB : public IGraphDB
 {
   public:
@@ -37,7 +38,7 @@ class GraphDB : public IGraphDB
         return;
       }
       error_code = Protocol::OK;
-      // FIXME : fixed type
+      // FIXME : hardcoded type
       this->__graphs[graph_name] = graph_types["adjacency_list_vecS_vecS_undirectedS"];
     }
 
