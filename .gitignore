@@ -17,3 +17,5 @@
 *.bak
 *.tmp
 tmp/*
+
+a.out
