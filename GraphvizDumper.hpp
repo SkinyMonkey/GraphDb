@@ -32,9 +32,9 @@ class TestAttributesWriter : public AttributesWriter<G>
     {
       this->__write_metadata(out, v);
       // FIXME : here does nos compile because of some type bullshit
-      std::cout << typeid(v).name() << std::endl;
-      std::cout << v.m_source << std::endl;
-      std::cout << v.target << std::endl;
+      //std::cout << typeid(v).name() << std::endl;
+      //std::cout << v.m_source << std::endl;
+      //std::cout << v.target << std::endl;
 //      for (auto attributes : this->__graph->edge_attributes[v])
 //        out << "[" << attributes.first << "=" << attributes.second << "]";
     }
