@@ -53,6 +53,7 @@ TODO:
     - [x] add interpretation
     - [x] remove interpretation
     - [x] dump
+  - binary protocol
 
 - [ ] Dumpers
   - [x] manager
