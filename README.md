@@ -39,6 +39,7 @@ TODO:
   - [x]  Delete an edge
   
   - [ ]  Defined attributes in vertex
+  - [ ]  Create a graph with different implementations (matrix, list etc)
 
 - [x] Network
   - [x] receive a message
