@@ -3,35 +3,26 @@
 
 #include <boost/graph/graphviz.hpp>
 
-template<typename G>
-class AttributesWriter
-{
-  public:
-    AttributesWriter(G const* graph) : __graph(graph) {}
-
-  protected:
-    template<typename V>
-      void  __write_metadata(std::ostream& out, V const& v) const
-      {
-        // FIXME : use edge_mapping to get the id in graph ...
-//        out << "[id=" << (*this->__graph)[e].uid << "]";
-//        out << "[name=" << (*this->__graph)[e].name << "]";
-      }
-
+/*
     void __write_attributes(std::ostream& out, std::map<std::string, std::string> const& attributes) const
     {
       for (auto attribute : attributes)
         out << "[" << attribute.first << "=" << attribute.second << "]";
     }
 
-    G const*    __graph;
-};
+*/
 
 template<typename G>
-class TestEdgeAttributesWriter : public AttributesWriter<G>
+class TestEdgeAttributesWriter
 {
   public:
-    TestEdgeAttributesWriter(G const* graph) : AttributesWriter<G>(graph) {}
+    TestEdgeAttributesWriter(G const* graph) : __graph(graph) {}
+
+    void  __write_metadata(std::ostream& out, unsigned long const& e) const
+    {
+      // FIXME : use edge_mapping to get the id in graph ...
+      out << "[name=" << (*this->__graph)[e].name << "]";
+    }
 
     void operator()(std::ostream& out, unsigned long const& e) const
     {
@@ -43,13 +34,22 @@ class TestEdgeAttributesWriter : public AttributesWriter<G>
 //      std::cout << v.target << std::endl;
 
     }
+    
+    G const*    __graph;
 };
 
 template<typename G>
-class TestVertexAttributesWriter: public AttributesWriter<G>
+class TestVertexAttributesWriter
 {
   public:
-    TestVertexAttributesWriter(G const* graph) : AttributesWriter<G>(graph) {}
+    TestVertexAttributesWriter(G const* graph) : __graph(graph) {}
+
+    void  __write_metadata(std::ostream& out, boost::detail::edge_desc_impl<boost::undirected_tag, unsigned long> const& v) const
+    {
+      // FIXME : use edge_mapping to get the id in graph ...
+      //        out << "[id=" << (*this->__graph)[e].uid << "]";
+//      out << "[name=" << (*this->__graph)[v].name << "]";
+    }
 
     // FIXME : Edge
     void operator()(std::ostream& out, boost::detail::edge_desc_impl<boost::undirected_tag, unsigned long> const& v) const
@@ -57,6 +57,8 @@ class TestVertexAttributesWriter: public AttributesWriter<G>
       this->__write_metadata(out, v);
 //      this->__write_attributes(out, this->__graph->vertex_attributes[v]);
     }
+    
+    G const*    __graph;
 };
 
 
