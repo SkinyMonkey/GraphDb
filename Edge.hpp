@@ -4,14 +4,15 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
 
-namespace							Edge
+namespace							                    Edge
 {
   typedef boost::tuple<Vertex::id, Vertex::id, std::string>	id;
-  typedef struct 						edge
+  typedef struct 						              edge
     {
-      id							      uid;
-      std::string						name;
-    }								        Edge;
+      id							                    uid;
+      std::string						              name;
+      std::map<std::string, std::string>  attributes;
+    }								                      Edge;
 }
 
 #endif /* __EDGE__ */

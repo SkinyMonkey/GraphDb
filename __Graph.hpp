@@ -66,8 +66,9 @@ class __Graph: public G
         (*this)[id].name = vertex_name;
       else
         (*this)[id].name = boost::lexical_cast<std::string>(id);
-
-      this->vertex_attributes[id] = args;
+      
+      // FIXME : copy args into attributes?
+      (*this)[id].attributes = args;
       return id;
     }
 
@@ -102,6 +103,8 @@ class __Graph: public G
       }
 
       (*this)[id].name = edge_name;
+      // (*this)[id].attributes = args;
+
       this->__edge_mapping[edge_id] = id;
 
       error_code = Protocol::OK;
@@ -151,8 +154,8 @@ class __Graph: public G
 
     typedef std::map<std::string, std::string>  attributes;
 
-    std::map<Vertex::id, attributes>   vertex_attributes;
-    std::map<Edge::id, attributes>     edge_attributes;
+//    std::map<Vertex::id, attributes>   vertex_attributes;
+//    std::map<Edge::id, attributes>     edge_attributes;
     attributes                         graph_properties;
 
   private:
