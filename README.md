@@ -91,3 +91,11 @@ TODO:
 - [ ]  Query a graph
   - build query
   - apply to visitor
+  
+- [ ] Persistence layer
+    - [x] abstract calls in Core
+    - [ ] mysql implementation
+    - bonus
+      - [ ] postgresql implementation
+      - [ ] mongodb implementation
+      - [ ] redis implementation
