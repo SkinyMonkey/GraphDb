@@ -62,12 +62,12 @@ class MysqlPersistence : public IPersistence
 
     void  get(Vertex::id const&)
     {
-      ;
+      std::cout << "SELECT * FROM vertex JOIN vertex_attributes ON vertex.id/vertex_attributes.id" << std::endl;
     }
     
     void  get(Edge::id const&)
     {
-      ;
+      std::cout << "SELECT * FROM edge JOIN edge_attributes ON edge.id/edge_attributes.id" << std::endl;
     }
 
   private:
