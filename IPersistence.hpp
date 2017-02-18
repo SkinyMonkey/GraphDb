@@ -10,7 +10,8 @@ class IPersistence
 
   virtual void  add(Vertex::id const&,
                     std::string const&,
-                    std::map<std::string, std::string> const&) = 0;
+                    std::map<std::string, std::string> const&,
+                    Protocol::error_code&) = 0;
 
   virtual void  add(Edge::id const&,
                     std::string const&,

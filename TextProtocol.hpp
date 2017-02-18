@@ -126,7 +126,7 @@ class TextProtocol : public AProtocol
     __parse_attributes(attributes, args, NAME);
 
     Vertex::id id =
-      this->__core->add(this->__check(args, NAME, ""), attributes);
+      this->__core->add(this->__check(args, NAME, ""), attributes, error_code);
 
     error_code = OK;
     return __answer(error_code

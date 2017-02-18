@@ -44,11 +44,10 @@ public:
       return id;
     }
 
-  // FIXME : error_code
-  Vertex::id	add(std::string const& vertex_name, std::map<std::string, std::string> const& args)
+  Vertex::id	add(std::string const& vertex_name, std::map<std::string, std::string> const& args, Protocol::error_code& code)
     {
       const Vertex::id& id = this->__graphdb->add(vertex_name, args);
-      this->__persistence->add(id, vertex_name, args);
+      this->__persistence->add(id, vertex_name, args, code);
       return id;
     }
 
