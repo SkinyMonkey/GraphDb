@@ -6,7 +6,7 @@
 
 namespace							                    Edge
 {
-  typedef boost::tuple<Vertex::id, Vertex::id, std::string>	id;
+  typedef boost::tuple<Vertex::id, Vertex::id>	id;
   typedef struct 						              edge
     {
       id							                    uid;

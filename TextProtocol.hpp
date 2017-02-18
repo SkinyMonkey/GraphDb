@@ -147,6 +147,7 @@ class TextProtocol : public AProtocol
       Vertex::id to = std::atol(args[TO].c_str());
       Edge::id   id = this->__core->add(from, to, "", error_code);
 
+      // FIXME : use id.get<0>() and id.get<1>()?
       return __answer(error_code
           ,"EDGE "
           ,boost::lexical_cast<std::string>(boost::tuples::get<0>(id))
@@ -185,8 +186,7 @@ class TextProtocol : public AProtocol
         && this->__check(args, TO, error_code, NO_TO) == true)
       this->__core->remove(
           boost::tuples::make_tuple(std::atol(args[FROM].c_str())
-            ,std::atol(args[TO].c_str())
-            ,"")
+                                   ,std::atol(args[TO].c_str()))
           ,error_code);
     return __answer(error_code, "RM");
   }

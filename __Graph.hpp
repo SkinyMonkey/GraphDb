@@ -79,7 +79,7 @@ class __Graph: public G
     {
       typename  G::edge_descriptor id;
       bool		  res;
-      Edge::id 	edge_id(from, to, edge_name);
+      Edge::id 	edge_id(from, to);
 
       if (exists(from) == false
           || exists(to) == false)
