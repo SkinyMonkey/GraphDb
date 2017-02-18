@@ -248,7 +248,8 @@ class TextProtocol : public AProtocol
 
     for (auto arg : args | boost::adaptors::sliced(offset + 1, args.size()))
     {
-      boost::split(split_buffer ,arg ,boost::is_any_of("="));
+      boost::split(split_buffer, arg, boost::is_any_of("="));
+
       if (this->__check(split_buffer, VALUE, error_code, NO_VALUE))
       {
         attributes[split_buffer[0]] = split_buffer[1];

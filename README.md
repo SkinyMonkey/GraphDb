@@ -29,7 +29,6 @@ TODO:
     -> one associative_property_map per graph
 
   - [ ]  Name an edge
-    -> dynamic attributes?
     -> one map per graph
     -> one associative_property_map per graph
 
@@ -49,8 +48,7 @@ TODO:
   - [x]  Delete a vertex
   - [x]  Delete an edge
   
-  - [ ]  Defined attributes in vertex
-    -> dynamic attributes?
+  - [x]  Defined attributes in vertex
 
 - [x] Network
   - [x] receive a message
@@ -91,10 +89,16 @@ TODO:
 - [ ]  Query a graph
   - build query
   - apply to visitor
+
+- [ ]  Data index?
   
 - [ ] Persistence layer
     - [x] abstract calls in Core
     - [ ] mysql implementation
+      - [x] class
+      - [x] table and database declaration
+      - [x] sql queries with attributes
+      - [ ] sql calls
     - bonus
       - [ ] postgresql implementation
       - [ ] mongodb implementation
