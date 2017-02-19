@@ -12,8 +12,8 @@ class GraphDB : public IGraphDB
 
       init_graph_types();
 
-      this->add("default", error_code);
-      this->use("default", error_code);
+      this->add("test", error_code);
+      this->use("test", error_code);
     }
 
     ~GraphDB()
@@ -21,7 +21,7 @@ class GraphDB : public IGraphDB
 
     void	 	use(std::string const& graph_name, Protocol::error_code& error_code)
     {
-      if (this->__exists(graph_name) == false)
+      if (this->exists(graph_name) == false)
       {
         error_code = Protocol::DOESNT_EXIST;
         return;
@@ -32,7 +32,7 @@ class GraphDB : public IGraphDB
 
     void		add(std::string const& graph_name, Protocol::error_code& error_code)
     {
-      if (this->__exists(graph_name) == true)
+      if (this->exists(graph_name) == true)
       {
         error_code = Protocol::ALREADY_EXIST;
         return;
@@ -59,7 +59,7 @@ class GraphDB : public IGraphDB
     void		remove(std::string const& graph_name,
                    Protocol::error_code& error_code)
     {
-      if (this->__exists(graph_name) == false)
+      if (this->exists(graph_name) == false)
       {
         error_code = Protocol::DOESNT_EXIST;
         return;
@@ -81,7 +81,7 @@ class GraphDB : public IGraphDB
     AGraph*		get(std::string const& graph_name,
                   Protocol::error_code& error_code) const
     {
-      if (this->__exists(graph_name) == false)
+      if (this->exists(graph_name) == false)
       {
         error_code = Protocol::DOESNT_EXIST;
         return NULL;
@@ -106,14 +106,14 @@ class GraphDB : public IGraphDB
       return this->__current->dump(dumper_name, error_code);
     }
 
-  private:
-    GraphDB(const GraphDB&);
-    GraphDB& operator=(const GraphDB&);
-
-    bool	__exists(std::string const& graph_name) const
+    bool	exists(std::string const& graph_name) const
     {
       return this->__graphs.find(graph_name) != this->__graphs.end();
     }
+
+  private:
+    GraphDB(const GraphDB&);
+    GraphDB& operator=(const GraphDB&);
 
     AGraph*				                  __current;
     std::map<std::string, AGraph*>	__graphs;

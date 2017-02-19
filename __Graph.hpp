@@ -142,6 +142,12 @@ class __Graph: public G
       return (&(*this)[this->__edge_mapping[id]]);
     }
 
+    /*
+    void  load(vertices, edges) {
+      ;
+    }
+    */
+
     unsigned long vertex_count(void) const
     {
       return num_vertices(*this);

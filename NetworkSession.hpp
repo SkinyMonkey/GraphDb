@@ -13,6 +13,7 @@ public:
     NetworkSession(boost::asio::io_service& io_service, AProtocol* p)
       : __socket(io_service), __protocol(p)
       {
+        ::bzero(this->__data, MAX_LENGTH);
       }
 
     ~NetworkSession()
@@ -39,9 +40,10 @@ public:
     {
       if (!error)
       {
-        std::cout << this->__data << std::endl;
+        this->__data[bytes_transferred] = '\0';
+
         std::string result = this->__protocol->interpret(std::string(this->__data));
-        ::bzero(this->__data, MAX_LENGTH);
+
         boost::asio::async_write(__socket,
             boost::asio::buffer(result),
             boost::bind(&NetworkSession::write,

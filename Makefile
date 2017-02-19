@@ -2,7 +2,7 @@ CC    =    clang
 
 INCLUDES = -I/usr/local/include
 
-LIBS = -L/usr/local/lib -lboost_graph -lboost_system -lstdc++
+LIBS = -L/usr/local/lib -lboost_graph -lboost_system -lstdc++ -lmysqlclient -lmysqlcppconn-static
 
 # -Wall -Wextra
 CPPFLAGS    =    -g3 -std=c++11 $(INCLUDES)

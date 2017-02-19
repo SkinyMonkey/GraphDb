@@ -11,7 +11,8 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print "Launching client on port %s" % 5005
 s.connect((TCP_IP, TCP_PORT))
 
-for command in ["add vertex",
+for command in [
+                "add vertex",
 		"add vertex souss gentil=true",
 		"add vertex tanon",
 		"add vertex thomas",
@@ -31,9 +32,10 @@ for command in ["add vertex",
   data = s.recv(BUFFER_SIZE)
   data_split = data.split(" ")
   if data_split[0] == "DUMP":
-    print data
     print "Data dumped into : %s" % FILE_NAME
     system("echo '%s' | dot -T png -o %s" % (data[5:], FILE_NAME));
+
+  print data
 
 #  print data
 #  i = i + 1

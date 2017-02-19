@@ -24,7 +24,7 @@ public:
       AProtocol*	     protocol = new TextProtocol();
       ANetwork*		     network = new Network(io_service, port, protocol);
       IGraphDB*		     graphdb = new GraphDB();
-      IPersistence*    persistence = new MysqlPersistence("default");
+      IPersistence*    persistence = new MysqlPersistence("test", graphdb);
 
       std::cout << "Launching server on port " << port << std::endl;
 

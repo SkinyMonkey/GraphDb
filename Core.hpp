@@ -28,45 +28,70 @@ public:
   void		use(std::string const& graph_name, Protocol::error_code& code)
     {
       this->__graphdb->use(graph_name, code);
-      this->__persistence->use(graph_name, code);
+
+      if (code == Protocol::OK) {
+        this->__persistence->use(graph_name, code);
+      }
     }
 
   void		add(std::string const& graph_name, Protocol::error_code& code)
     {
       this->__graphdb->add(graph_name, code);
-      this->__persistence->add(graph_name, code);
+
+      if (code == Protocol::OK) {
+        this->__persistence->add(graph_name, code);
+      }
     }
 
   Edge::id	add(Vertex::id const from, Vertex::id const to, std::string const& name, Protocol::error_code& code)
     {
       const Edge::id& id = this->__graphdb->add(from, to, name, code);
-      this->__persistence->add(id, name, code);
+
+      if (code == Protocol::OK) {
+        this->__persistence->add(id, name, code);
+      }
       return id;
     }
 
   Vertex::id	add(std::string const& vertex_name, std::map<std::string, std::string> const& args, Protocol::error_code& code)
     {
       const Vertex::id& id = this->__graphdb->add(vertex_name, args);
-      this->__persistence->add(id, vertex_name, args, code);
+
+      if (code == Protocol::OK) {
+        std::cout << "VERTEX PERSISTENCE" << std::endl;
+        this->__persistence->add(id, vertex_name, args, code);
+      }
+      else {
+        std::cout << "NO VERTEX PERSISTENCE: " << code << std::endl;
+      }
       return id;
     }
 
   void		remove(std::string const& graph_name, Protocol::error_code& code)
     {
       this->__graphdb->remove(graph_name, code);
-      this->__persistence->remove(graph_name, code);
+
+      if (code == Protocol::OK) {
+        this->__persistence->remove(graph_name, code);
+      }
     }
 
   void		remove(Edge::id id, Protocol::error_code& code)
     {
       this->__graphdb->remove(id, code);
-      this->__persistence->remove(id, code);
+
+      if (code == Protocol::OK) {
+        this->__persistence->remove(id, code);
+      }
     }
 
   void		remove(Vertex::id id, Protocol::error_code& code)
     {
       this->__graphdb->remove(id, code);
-      this->__persistence->remove(id, code);
+
+      if (code == Protocol::OK) {
+        this->__persistence->remove(id, code);
+      }
     }
 
   std::string	dump(std::string const& dumper_name, Protocol::error_code& error_code) const

@@ -1,6 +1,7 @@
 #ifndef __IPERSISTENCE__
 #define __IPERSISTENCE__
 
+// APersistence for GraphDB pointer
 class IPersistence
 {
   public:

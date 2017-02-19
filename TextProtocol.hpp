@@ -55,6 +55,8 @@ class TextProtocol : public AProtocol
 
   std::string		interpret(std::string const& command)
   {
+    std::cout << "COMMAND:" << command << std::endl;
+
     std::vector<std::string>	split_buffer;
     error_code		error_code;
     interpretation	function;
@@ -99,7 +101,7 @@ class TextProtocol : public AProtocol
   std::string		__call_sub(std::vector<std::string> const& args
       ,sub_execution_table const& table)
   {
-    error_code	error_code;
+    error_code	error_code = Protocol::OK;
     subinterpretation function;
 
     if (this->__exists(args[TYPE], table) == true)
@@ -145,7 +147,8 @@ class TextProtocol : public AProtocol
 
       Vertex::id from = std::atol(args[FROM].c_str());
       Vertex::id to = std::atol(args[TO].c_str());
-      Edge::id   id = this->__core->add(from, to, "", error_code);
+      const std::string name = args[FROM] + "-" + args[TO];
+      Edge::id   id = this->__core->add(from, to, name, error_code);
 
       // FIXME : use id.get<0>() and id.get<1>()?
       return __answer(error_code

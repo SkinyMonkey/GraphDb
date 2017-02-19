@@ -19,7 +19,8 @@ namespace		Protocol
       NO_VALUE,
       NO_TYPE,
       NO_COMMAND,
-      ERROR_CODE_SIZE
+      ERROR_CODE_SIZE,
+      PERSISTENCE_ERROR,
     };
 
   class AProtocol
