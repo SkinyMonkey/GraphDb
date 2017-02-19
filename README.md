@@ -94,11 +94,11 @@ TODO:
   
 - [ ] Persistence layer
     - [x] abstract calls in Core
-    - [ ] mysql implementation
+    - [x] mysql implementation
       - [x] class
       - [x] table and database declaration
       - [x] sql queries with attributes
-      - [ ] sql calls
+      - [x] sql calls
     - bonus
       - [ ] postgresql implementation
       - [ ] mongodb implementation
