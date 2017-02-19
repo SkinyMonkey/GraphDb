@@ -234,6 +234,8 @@ class MysqlPersistence : public IPersistence
         sql::ResultSet* get_vertices_attributes_result = stmt->executeQuery(get_vertices_attributes);
 
         this->__add_vertices(get_vertices_result, get_vertices_attributes_result);
+
+        std::cout << "EDGE NUMBER " << get_edges_result->rowsCount() << std::endl;
         this->__add_edges(get_edges_result);
       }
       catch (sql::SQLException& e) {
@@ -295,10 +297,6 @@ class MysqlPersistence : public IPersistence
         attributes_results->next();
 
         while (results->next()) {
-          // TODO : how to ensure they have the same id?
-          //        check that the results re loaded in uid order
-          //        dump an sql with that to check
-
           const std::string name = results->getString("name");
           const std::string uid = results->getString("uid");
           std::map<std::string, std::string> attributes;
@@ -319,12 +317,12 @@ class MysqlPersistence : public IPersistence
 
       try {
         while (results->next()) {
-          const std::string name = results->getString("edge.name");
           unsigned long from;
           unsigned long to;
+          const std::string name = results->getString("name");
 
-          std::stringstream(results->getString("edges.from")) >> from;
-          std::stringstream(results->getString("edges.to")) >> to;
+          std::stringstream(results->getString("uid_from")) >> from;
+          std::stringstream(results->getString("uid_to")) >> to;
           // this->__fill_attributes(results)
 
           this->__graphdb->add(from, to, name, error_code);
