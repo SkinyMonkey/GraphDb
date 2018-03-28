@@ -1,6 +1,7 @@
 #include <string>
 #include <map>
 #include <utility>
+#include <iostream>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/adjacency_matrix.hpp>
 #include <boost/asio.hpp>
@@ -11,6 +12,7 @@
 #include "ISearchEngine.hpp"
 #include "Manager.hpp"
 #include "ADumper.hpp"
+#include "Browser.hpp"
 #include "GraphvizDumper.hpp"
 #include "Graph.hpp"
 #include "IGraphDB.hpp"

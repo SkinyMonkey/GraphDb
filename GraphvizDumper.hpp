@@ -74,6 +74,8 @@ class GraphvizDumper : public ADumper
       std::ostringstream out;
       G const*                 graph_ptr = static_cast<G const*>(graph);
 
+      bfs<G>(graph_ptr);
+
       boost::write_graphviz(out, *graph_ptr,
           TestEdgeAttributesWriter<G>(graph_ptr),
           TestVertexAttributesWriter<G>(graph_ptr));

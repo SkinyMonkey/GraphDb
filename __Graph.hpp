@@ -5,8 +5,6 @@
 #include <boost/foreach.hpp>
 #include <ctime>
 
-#include <iostream>
-
 template<typename G>
 class __Graph: public G
 {
@@ -142,12 +140,6 @@ class __Graph: public G
       return (&(*this)[this->__edge_mapping[id]]);
     }
 
-    /*
-    void  load(vertices, edges) {
-      ;
-    }
-    */
-
     unsigned long vertex_count(void) const
     {
       return num_vertices(*this);
@@ -201,7 +193,7 @@ class AGraph
     virtual Edge::id		add(Vertex::id const&,
                             Vertex::id const&,
                             std::string const&,
-                            Protocol::error_code&) {return 0;}
+                            Protocol::error_code&) {return boost::tuple<Vertex::id, Vertex::id>(0, 0);}
 
     virtual bool      remove(Vertex::id const,
                              Protocol::error_code&) {return false;}
